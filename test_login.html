@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title> Testing</title>
+
+</head>
+<body style="background-color:blueviolet">
+
+   
+
+<h1 style="color: antiquewhite; font-size:500%; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; margin-left: 28%;
+                         position: absolute; margin-top: 20%;" >Bubble POP</h1>
+   <div> <img style="position: absolute; align-items: center; margin: auto; margin-left: 9%; top: 20%;background-color: cadetblue ;" width="800" height="1000"/></div>
+   <canvas style="margin-left: 30%;" id="viewport" width="628" height="30"></canvas></div>
+   <!-- <div class="loginbutton">
+      <input type="button" style="color: white ; background-color: red;display: flex;justify-content: center;
+      font-size: xx-large;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding-left: 20%;padding-right: 20%;padding-top: 1%;padding-bottom: 1%; bottom: 15%; 
+      position: absolute;align-items:center; "
+       onclick="myFunction()" value="Huawei Login"/></div> -->
+
+       <div class="loginbutton">
+         <input type="button" style="color: white ; background-color: red;
+         font-size:xx-large;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;ef=
+         padding-left: 20%;padding-right: 20%;padding-top: 5%;padding-bottom: 5%; margin-left: 20%;
+         bottom: 10%;position: absolute; text-align: center;"
+          onclick="myFunction()" value="Huawei Login"/></div>
+
+<!--    <a href='https://oauth-login.cloud.huawei.com/oauth2/v3/authorize?response_type=code&access_type=offline&state=state_parameter_passthrough_value&client_id=
+102045733&redirect_uri=http://127.0.0.1:5503/bubble-shooter.html&scope=openid+email&t&' style="color: white ; background-color: red;
+         font-size:xx-large;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;ef=
+         padding-left: 20%;padding-right: 20%;padding-top: 5%;padding-bottom: 5%; margin-left: 20%;
+         bottom: 10%;position: absolute; ">Huawei Login</a> -->
+          
+   <script>
+         function myFunction() 
+          {
+            var params = { "appid": "103398347", "forceLogin": "1" }
+            HwFastappObject.gameLogin(JSON.stringify(params));
+           }
+
+            HwFastappObject.onGameLoginResult = function onGameLoginResult(str)
+          {
+            
+            success = 0;
+                console.log(str);
+         
+
+              // if (confirm("Welcome "+str.data+"")) {
+             //  document.location.href="https://htmlpreview.github.io/?https://github.com/Arkesh-Unity/QuickGameSampleTesting/blob/main/home.html" //} 
+               //else {
+               // Do nothing!
+               //console.log('Thing was not saved to the database.');
+               //window.location.href="home.html"
+               //}
+
+         
+        }
+
+   </script>
+</body>
+</html> 
