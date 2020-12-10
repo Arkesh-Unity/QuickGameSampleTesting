@@ -18,12 +18,12 @@
 
 		function callandroid(){
                 console.log("liangjunming showFloatWindow ");
-                var params = {"appid":"103398347"}
+                var params = {"appid":"103462861"}
 				HwFastappObject.showFloatWindow(JSON.stringify(params));
         }
             function callandroid1(){
                 console.log("liangjunming hideFloatWindow ");
-				var params = {"appid":"103398347"}
+				var params = {"appid":"103462861"}
                 HwFastappObject.hideFloatWindow(JSON.stringify(params));
             }
             // function GamesignIn(){
@@ -42,7 +42,7 @@
 	   function getProductDetails (){
 		    var params = {
 			    "merchantId": "890086000000001051",
-                "applicationID": "103398347",
+                "applicationID": "103462861",
                 "requestId": "123",
                 "productNos": "d01|d02",}
 	        HwFastappObject.getProductDetails(JSON.stringify(params));
@@ -61,7 +61,7 @@
 			
 	      function productPay (){
 			var params = {"merchantId": "890086000000001051",
-                "applicationID": "103398347",
+                "applicationID": "103462861",
                 "requestId": "20201114025803669",
                 "productNo": "d01",
                 "serviceCatalog":"1",
@@ -93,7 +93,7 @@
 			var params = 
 				{
                 		"amount": 0.01,     //商品金额
-				"applicationID": "103398347",    //应用ID，在华为开发者联盟上获取的APP ID 
+				"applicationID": "103462861",    //应用ID，在华为开发者联盟上获取的APP ID 
 				"productDesc": "250 Coins",
 				"productName": "",
 				"serviceCatalog": "X5",    //游戏设置为"X6"，应用设置为"X5" 
@@ -124,7 +124,7 @@
 			
 			function getPurchaseInfo (){
 			    var params = {"merchantId": "890086000000001051",
-                "appId": "103398347",
+                "appId": "103462861",
                 "requestId": "20191130093403165",
                 "priceType": 3,
                 //"productId":"yuFan",
@@ -179,7 +179,7 @@
 	        }
 			
 			function isSandboxActivated (){
-			    var params = {isSandboxActivatedReq: {"applicationID": "103398347",}}
+			    var params = {isSandboxActivatedReq: {"applicationID": "103462861",}}
 				HwFastappObject.isSandboxActivated(JSON.stringify(params));
 	        }
 
@@ -193,7 +193,7 @@
 			
 			function obtainOwnedPurchases (){
 			var priceType = document.getElementById("priceType")
-			    var params = { ownedPurchasesReq: {"priceType": priceType.value,"applicationID": "103398347",
+			    var params = { ownedPurchasesReq: {"priceType": priceType.value,"applicationID": "103462861",
 				"publicKey":"MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAnLLFO6c8d1x6jdbZ8PkNtrLtRMiFaRqWZgEjC4Vj9QXnPCmDZoPO5A5TSwzlWjYL5ktbbDnZC6Vfp8VI8nTMm8DvbGsJ+1ihru31vG1gqvUgOaXESqBhdpMrKFEgNBV8zlalLpcCU6Gayd8QJCxXRPcUisHLTQFJHjTMOWmvOcKiSxt1VmG3dvfWVkoMeKyerZy4qHEWM/asJihPZATBQ7puMC/kOh6i8V2gv4w/74KWifpBr3J5RN+PK6E7yWUqIALFTnN5vOIif2HELvgt+S6uaGpRydhSwu1xtV7bPtXQY20ollYo4BUi+AvM16iBCa1+1Mdw0y6Y9gZAtpHRK1Pf+yea4aoY4y/bZ6EX21wucvbzxexDcBkGn0DVvNHKr3usmUmq/yfMMmDPqPujv3iDWKFENfL4Agugo7I8etCF8vVYDOT5J8gXupgGLiritkfALZD8HgNZADyM+NnvQBJrdeVoHxCYoQMCS2hySPf2AaZWT7PzVAeGidLcEeKlAgMBAAE="}}
 				HwFastappObject.obtainOwnedPurchases(JSON.stringify(params));
 	        }
@@ -213,7 +213,7 @@
 			var priceType = document.getElementById("priceType")
 			var productId = document.getElementById("productId")
 		
-			    var params = { productInfoReq: {"priceType": priceType.value,"productIds": productId.value,"applicationID": "103398347",}}
+			    var params = { productInfoReq: {"priceType": priceType.value,"productIds": productId.value,"applicationID": "103462861",}}
 				HwFastappObject.obtainProductInfo(JSON.stringify(params));
 	        }
 
@@ -229,7 +229,7 @@
 			var priceType = document.getElementById("priceType")
 			var productId = document.getElementById("productId")
 			
-			    var params = { purchaseIntentReq: {"applicationID": "103398347","productId": productId.value,"priceType": priceType.value,"developerPayload": "testPurchase",
+			    var params = { purchaseIntentReq: {"applicationID": "103462861","productId": productId.value,"priceType": priceType.value,"developerPayload": "testPurchase",
 				"publicKey":"MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAnLLFO6c8d1x6jdbZ8PkNtrLtRMiFaRqWZgEjC4Vj9QXnPCmDZoPO5A5TSwzlWjYL5ktbbDnZC6Vfp8VI8nTMm8DvbGsJ+1ihru31vG1gqvUgOaXESqBhdpMrKFEgNBV8zlalLpcCU6Gayd8QJCxXRPcUisHLTQFJHjTMOWmvOcKiSxt1VmG3dvfWVkoMeKyerZy4qHEWM/asJihPZATBQ7puMC/kOh6i8V2gv4w/74KWifpBr3J5RN+PK6E7yWUqIALFTnN5vOIif2HELvgt+S6uaGpRydhSwu1xtV7bPtXQY20ollYo4BUi+AvM16iBCa1+1Mdw0y6Y9gZAtpHRK1Pf+yea4aoY4y/bZ6EX21wucvbzxexDcBkGn0DVvNHKr3usmUmq/yfMMmDPqPujv3iDWKFENfL4Agugo7I8etCF8vVYDOT5J8gXupgGLiritkfALZD8HgNZADyM+NnvQBJrdeVoHxCYoQMCS2hySPf2AaZWT7PzVAeGidLcEeKlAgMBAAE=",}}
 				HwFastappObject.createPurchaseIntent(JSON.stringify(params));
 	        }
@@ -244,7 +244,7 @@
 			
 			function consumeOwnedPurchase (){
 			alert("consumeOwnedPurchase:"+JSON.stringify(inAppPurchaseData));
-			    var params = { consumeOwnedPurchaseReq: {"applicationID": "103398347","developerPayload":"testPurchase","purchaseToken":inAppPurchaseData[0].purchaseToken,
+			    var params = { consumeOwnedPurchaseReq: {"applicationID": "103462861","d103462861eveloperPayload":"testPurchase","purchaseToken":inAppPurchaseData[0].purchaseToken,
           "publicKey":"MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAnLLFO6c8d1x6jdbZ8PkNtrLtRMiFaRqWZgEjC4Vj9QXnPCmDZoPO5A5TSwzlWjYL5ktbbDnZC6Vfp8VI8nTMm8DvbGsJ+1ihru31vG1gqvUgOaXESqBhdpMrKFEgNBV8zlalLpcCU6Gayd8QJCxXRPcUisHLTQFJHjTMOWmvOcKiSxt1VmG3dvfWVkoMeKyerZy4qHEWM/asJihPZATBQ7puMC/kOh6i8V2gv4w/74KWifpBr3J5RN+PK6E7yWUqIALFTnN5vOIif2HELvgt+S6uaGpRydhSwu1xtV7bPtXQY20ollYo4BUi+AvM16iBCa1+1Mdw0y6Y9gZAtpHRK1Pf+yea4aoY4y/bZ6EX21wucvbzxexDcBkGn0DVvNHKr3usmUmq/yfMMmDPqPujv3iDWKFENfL4Agugo7I8etCF8vVYDOT5J8gXupgGLiritkfALZD8HgNZADyM+NnvQBJrdeVoHxCYoQMCS2hySPf2AaZWT7PzVAeGidLcEeKlAgMBAAE="}}
 				HwFastappObject.consumeOwnedPurchase(JSON.stringify(params));
 	        }
@@ -259,7 +259,7 @@
 			
 			function obtainOwnedPurchaseRecord (){
 			var priceType = document.getElementById("priceType")
-			    var params = { ownedPurchasesRecordReq: {"applicationID": "103398347","priceType": priceType.value,
+			    var params = { ownedPurchasesRecordReq: {"applicationID": "103462861","priceType": priceType.value,
                  "publicKey":"MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAnLLFO6c8d1x6jdbZ8PkNtrLtRMiFaRqWZgEjC4Vj9QXnPCmDZoPO5A5TSwzlWjYL5ktbbDnZC6Vfp8VI8nTMm8DvbGsJ+1ihru31vG1gqvUgOaXESqBhdpMrKFEgNBV8zlalLpcCU6Gayd8QJCxXRPcUisHLTQFJHjTMOWmvOcKiSxt1VmG3dvfWVkoMeKyerZy4qHEWM/asJihPZATBQ7puMC/kOh6i8V2gv4w/74KWifpBr3J5RN+PK6E7yWUqIALFTnN5vOIif2HELvgt+S6uaGpRydhSwu1xtV7bPtXQY20ollYo4BUi+AvM16iBCa1+1Mdw0y6Y9gZAtpHRK1Pf+yea4aoY4y/bZ6EX21wucvbzxexDcBkGn0DVvNHKr3usmUmq/yfMMmDPqPujv3iDWKFENfL4Agugo7I8etCF8vVYDOT5J8gXupgGLiritkfALZD8HgNZADyM+NnvQBJrdeVoHxCYoQMCS2hySPf2AaZWT7PzVAeGidLcEeKlAgMBAAE="}}
 				HwFastappObject.obtainOwnedPurchaseRecord(JSON.stringify(params));
 	        }
@@ -273,7 +273,7 @@
 	        }
 			
 			function startIapActivity (){
-			    var params = { startIapActivityReq: {"applicationID": "103398347","type":2,}}
+			    var params = { startIapActivityReq: {"applicationID": "103462861","type":2,}}
 				HwFastappObject.startIapActivity(JSON.stringify(params));
 	        }
 
