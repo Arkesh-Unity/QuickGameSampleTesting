@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title> Testing</title>
+
+</head>
+<body style="background-color:blueviolet">
+
+   
+
+<h1 style="color: antiquewhite; font-size:500%; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; margin-left: 28%;
+                         position: absolute; margin-top: 20%;" >Bubble POP</h1>
+   <div> <img style="position: absolute; align-items: center; margin: auto; margin-left: 9%; top: 20% ;" src="screenshot.png" width="800" height="1000"/></div>
+   <canvas style="margin-left: 30%;" id="viewport" width="628" height="30"></canvas></div>
+   <!-- <div class="loginbutton">
+      <input type="button" style="color: white ; background-color: red;display: flex;justify-content: center;
+      font-size: xx-large;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding-left: 20%;padding-right: 20%;padding-top: 1%;padding-bottom: 1%; bottom: 15%; 
+      position: absolute;align-items:center; "
+       onclick="myFunction()" value="Huawei Login"/></div> -->
+
+       <div class="loginbutton">
+         <input type="button" style="color: white ; background-color: red;
+         font-size:xx-large;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+         padding-left: 20%;padding-right: 20%;padding-top: 5%;padding-bottom: 5%; margin-left: 20%;
+         bottom: 10%;position: absolute; "
+          onclick="myFunction()" value="Huawei Login"/></div>
+
+          
+          
+   <script>
+         function myFunction() {
+            var params = { "appid": "103398347", "forceLogin": "1" }
+            HwFastappObject.gameLogin(JSON.stringify(params));
+             }
+
+            HwFastappObject.onGameLoginResult = function onGameLoginResult(str) {
+            //Mark
+            success = 0;
+            document.getElementById("resultnew").innerHTML = str.code; // code
+            document.getElementById("result").innerHTML = str.data; // name 
+
+               if (confirm("Welcome "+str.data+"")) {
+               window.location.href="home.html" } 
+               else {
+               // Do nothing!
+               //console.log('Thing was not saved to the database.');
+               //window.location.href="home.html"
+               }
+
+         
+        }
+
+   </script>
+</body>
+</html> 
