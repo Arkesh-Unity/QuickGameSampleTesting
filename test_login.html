@@ -34,19 +34,21 @@
          bottom: 10%;position: absolute; ">Huawei Login</a> -->
           
    <script>
-         function myFunction() {
+         function myFunction() 
+          {
             var params = { "appid": "103398347", "forceLogin": "1" }
             HwFastappObject.gameLogin(JSON.stringify(params));
-             }
+           }
 
-            HwFastappObject.onGameLoginResult = function onGameLoginResult(str) {
-            //Mark
+            HwFastappObject.onGameLoginResult = function onGameLoginResult(str)
+          {
+            
             success = 0;
-          //  document.getElementById("resultnew").innerHTML = str.code; // code
-            //document.getElementById("result").innerHTML = str.data; // name 
+                console.log(str);
+         
 
               // if (confirm("Welcome "+str.data+"")) {
-               document.location.href="https://htmlpreview.github.io/?https://github.com/Arkesh-Unity/QuickGameSampleTesting/blob/main/home.html" //} 
+             //  document.location.href="https://htmlpreview.github.io/?https://github.com/Arkesh-Unity/QuickGameSampleTesting/blob/main/home.html" //} 
                //else {
                // Do nothing!
                //console.log('Thing was not saved to the database.');
