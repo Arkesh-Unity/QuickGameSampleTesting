@@ -38,6 +38,16 @@ function myFunction() {
 				alert("pay:"+JSON.stringify(params));
 	        HwFastappObject.pay(JSON.stringify(params));
 	        }
+	
+	  HwFastappObject.onPayResult  = function onPayResult (str){
+			    alert("支付结果:sign:"+JSON.stringify(str));
+				var text = document.getElementById("text");
+				//text.innerHTML = JSON.stringify(str);
+				text.innerHTML = str;
+				system.postMessage("web call quickapp");
+			    console.log("yuli","pay ="+JSON.stringify(str));
+		        
+	        }
   
 </script>
 
