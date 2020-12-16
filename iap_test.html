@@ -290,6 +290,8 @@ function myFunction()
 {
  // alert("I am an alert box!");
 	console.log("yuli","Ashok");
+	document.getElementById("1000Coins").value = "Ashok";
+	
 }
 
 function buy_coin(inr)
@@ -405,7 +407,7 @@ div.center {
   <div class="column">
     <div id="rcorners1">
 
-	<label  style="color:#9e46a8; margin-left: 20px;" >1000 Coins</label><br>
+	<label  id="1000Coins" style="color:#9e46a8; margin-left: 20px;" >1000 Coins</label><br>
 	 <label  style="color:white; margin-left: 20px;" >for INR 25</label>
 	<br>
         <input id="buy_button" type="button" value="Buy" onclick=myFunction()>
