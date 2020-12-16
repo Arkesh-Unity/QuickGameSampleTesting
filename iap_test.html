@@ -284,13 +284,13 @@
 			
 	
 
-
+document.getElementById("myBtn").onclick = myFunction;
        
 function myFunction() 
 {
  // alert("I am an alert box!");
 	console.log("yuli","Ashok");
-	document.getElementById("1000Coins").value = "Ashok";
+	document.getElementById("Coins").value = "Ashok";
 	
 }
 
@@ -399,7 +399,7 @@ div.center {
         <label  style="color:#9e46a8; margin-left: 20px;" >750 Coins</label><br>
 	<label  style="color:white; margin-left: 20px;" >for INR 20</label>
 	<br>
-        <input id="buy_button" type="button" value="Buy" onclick=buy_coin(750)>
+        <input id="myBtn" type="button" value="Buy" onclick=buy_coin(750)>
 
    </div>
   </div>
@@ -407,10 +407,10 @@ div.center {
   <div class="column">
     <div id="rcorners1">
 
-	<label  id="1000Coins" style="color:#9e46a8; margin-left: 20px;" >1000 Coins</label><br>
+	<label  id="Coins" style="color:#9e46a8; margin-left: 20px;" >1000 Coins</label><br>
 	 <label  style="color:white; margin-left: 20px;" >for INR 25</label>
 	<br>
-        <input id="buy_button" type="button" value="Buy" onclick=myFunction()>
+        <input id="myBtn" style="background: #9e46a8; padding: 5px; width: 100px;height: 40px;  " type="button" value="Buy" onclick=myFunction()>
 
     </div>
   </div>
