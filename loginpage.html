@@ -26,6 +26,12 @@
          padding-left: 20%;padding-right: 20%;padding-top: 5%;padding-bottom: 5%; margin-left: 20%;
          bottom: 10%;position: absolute; text-align: center;"
           onclick="myFunction()" value="Huawei Login"/></div>
+   
+   <div style="text-align: center;bottom: 1%;position: absolute;width: 100%;">
+               <input class="loginbutton" type="button" style="color: white ;
+               background-color: red;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+               padding-left: 12%;padding-right: 12%;padding-top: 1%;padding-bottom: 1%; align-content: center;"
+                onclick="savePlayerInfo()" value="Save Info"/></div>
 
 <!--    <a href='https://oauth-login.cloud.huawei.com/oauth2/v3/authorize?response_type=code&access_type=offline&state=state_parameter_passthrough_value&client_id=
 102045733&redirect_uri=http://127.0.0.1:5503/bubble-shooter.html&scope=openid+email&t&' style="color: white ; background-color: red;
@@ -34,6 +40,26 @@
          bottom: 10%;position: absolute; ">Huawei Login</a> -->
           
    <script>
+      
+      
+           //store user role information for intermodal activities
+           function savePlayerInfo(){
+		          var params = {"appid":"103462861"}
+	             HwFastappObject.savePlayerInfo(JSON.stringify(params));
+	        }
+           HwFastappObject.onSavePlayerInfoResult = function onSavePlayerInfoResult(str){
+		     document.getElementById("resultsave").innerHTML= str.code;
+           console.log("krishna login result  str "+str);
+           console.log("krishna onSavePlayerInfoResult result str.data "+str.data);
+           console.log("krishna onSavePlayerInfoResult result str.code "+str.code);
+           console.log("krishna onSavePlayerInfoResult result str.gameUserData.displayName "+str.gameUserData.displayName);
+           console.log("krishna onSavePlayerInfoResult result str.gameUserData.gameAuthSign "+str.gameUserData.gameAuthSign);
+           console.log("krishna onSavePlayerInfoResult result str.gameUserData.isAuth "+str.gameUserData.isAuth);
+           console.log("krishna onSavePlayerInfoResult result str.gameUserData.playerId "+str.gameUserData.playerId);
+           console.log("krishna onSavePlayerInfoResult result str.gameUserData.playerLevel "+str.gameUserData.playerLevel);
+           console.log("krishna onSavePlayerInfoResult result str.gameUserData.ts "+str.gameUserData.ts);
+	      }
+      
          function myFunction() {
             var params = { "appid": "103462861", "forceLogin": "1" }
             HwFastappObject.gameLogin(JSON.stringify(params));
