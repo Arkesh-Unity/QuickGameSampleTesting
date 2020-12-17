@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<style>
+div.c {
+  text-align: right;
+} 
+div.center {
+  text-align: center;
+} 
+
+.column 
+{
+  float: left;
+  width: 50%;
+  padding: 10px;
+}
+
+#rcorners1 {
+  border-radius: 15px;
+  background: #ffaec9;
+  padding: 20px; 
+  width: 150px;
+  height: 150px;  
+}
+
+
+#rcorners2 {
+  border-radius: 25px;
+  background: #73AD21;
+  padding: 20px; 
+  width: 100px;
+  height: 75px;  
+}
+
+#inner {
+  display: inline-block;
+}
+
+
+#buy_button 
+{  
+  background: #9e46a8;
+  width: 100px;
+  height: 40px;  
+}
+
+</style>
+
+</head>
+<body style="background-color:#9e46a8;">
+
+Name: <input type="text" id="myText" value="Mickey">
+
+<p>Click the button to change the value of the text field.</p>
+
+<button onclick="myFunction()">Try it</button>
+
+<label id = "GFG"> 
+        Welcome to GeeksforGeeks 
+    </label> 
+
+
+
+Name: <input type="text" id="myText" value="Mickey">
+
+<div  style="margin-left: 22px;">
+
+<div class="row">
+
+<div class="column" >
+    <label  style="margin-top:20px; color:white;" >Score:</label>    <label style="color:white;">2020</label>
+  </div>
+  <div class="column"  >
+    <label style="margin-top:20px; margin-left: 70px; color:white;">Coin:</label>   <label style="color:white;">200</label>
+  </div>
+
+</div> </div>
+
+
+<div class="row">
+
+<div class=center>
+    <label style="color:white;">Store </label>
+ 
+</div> </div>
+
+
+<div class="row">
+
+  <div class="column" >
+   <div id="rcorners1" >
+        <label  style="color:#9e46a8;margin-left: 20px;" >250 Coins</label><br>
+	<label  style="color:white;margin-left: 20px;" >for INR 10</label>
+	<br>
+        <input id="buy_button" type="button" value="Buy" onclick="buy_coin(250)">
+
+   </div>
+  </div>
+
+  <div class="column">
+    <div id="rcorners1">
+
+	<label  style="color:#9e46a8; margin-left: 20px;" >500 Coins</label><br>
+	<label  style="color:white; margin-left: 20px;" >for INR 15</label>
+	<br>
+        <input id="buy_button" type="button" value="Buy" onclick="buy_coin(500)">
+    </div>
+  </div> </div>
+
+
+<div class="row">
+
+  <div class="column" >
+   <div id="rcorners1" >
+        <label  style="color:#9e46a8; margin-left: 20px;" >750 Coins</label><br>
+	<label id="my" style="color:white; margin-left: 20px;" >for INR 20</label>
+	<br>
+        <input id="Btn" style="background: #9e46a8;
+  width: 100px;
+  height: 40px; " type="button" value="Buy" >
+
+   </div>
+  </div>
+
+  <div class="column">
+    <div id="rcorners1">
+
+	<label  style="color:#9e46a8; margin-left: 20px;" >1000 Coins</label><br>
+	 <label  style="color:white; margin-left: 20px;" >for INR 25</label>
+	<br>
+        <input style="background: #9e46a8;
+  width: 100px;
+  height: 40px; " type="button" value="Buy" onclick="myFunction()" >
+    </div>
+
+  </div> </div>
+
+
+
+</div>
+
+
+
+<script>
+
+
+function myFunction() {
+  document.getElementById("myText").value = "Johnny Bravo";
+
+}
+
+		function pay (){
+			var params = {
+                "amount": 0.01,     //商品金额
+				"applicationID": "103504135",    //应用ID，在华为开发者联盟上获取的APP ID 
+				"productDesc": "d03",
+				"productName": "d03",
+				"serviceCatalog": "X5",    //游戏设置为"X6"，应用设置为"X5" 
+				"merchantId": "890086000000001051",    //华为开发者联盟上申请支付服务获取的“支付ID“
+				"merchantName": "d03",    //商户名称
+				"sign": "G+2TQxtDCl/OSVfXCxR165PZj7Tm1VOL3dl8UgKSlV6et5YSf+PDf3vqgrDwVIzqijC49OSd6I9DPxFZE8jBd6Rq3d6rwFDcgW6Z3OmXh54Q+UohrpqkTEXX7NPlxrfIQIOYnE67SU84c+vNrDQwtMCbLB58gYLpXUrFBnZBsVFy1xhPzQvYA2sjvaD+WwvKUAl/8NVq0oN6ux84dS60+ItUDS6EjIJGFEZO3iCHpkC3DZdY0GiLGO+rb7fgfqxyM4cEiqZ4wVxtkJcpdEJ6mLCFvSktEcQVjNzdVTuQzUYvQ0Gt3sxVxW/p3L/vJvx60rmwH1neU4M3ZqDXs1+nDg==",    //签名
+				"requestId": "20201111041031686",    //在支付前生成，用于唯一标识一次支付请求。支付平台在服务器回调接口中会原样返回requestId的值 
+				"urlver": "2",    //固定值为2
+				"sdkChannel": 1,    //游戏设置为3，应用设置为1
+				"publicKey": "MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEA3JA2BdT7JZ8mRI5VJFObbq/YbqwjZXFP+fEh4nKVrQYgdheSb9e91pB0MNsJtMFafetEVJSCdjK+ZVPiBpeKiRYgaXEmCoNERIHGRh4PcU7IzvGOG+W8uLDCYmqzuHqUBCNFxBbe7pRjhLTv8fI1S/QvDNE6j/sKRB9YHf1C3vhsWoN2TXjaGcMnfAPl7VfmShvezmOvFMS8VMwGB45wE/xTDrshvwdwDSNxkOKLVH5Zsg+2xAVyN2TEq9MP7zzIW9ybHfM1F4APnQyszclU6sGep7M5mMTm6jXQ1Dpz1TMH+NjprS6kkRuhZSATw3cBY/0dpHI8ehKUPOkLobqsZT0Zhyu5W4tRVRh3Fzasf2xAc9YDmtmg9SsqQSjkHZWFghdBLqE5exfpJ7KYaYIkKaz/vjWTJRQo2bO3UeCOMAqaqSE2AnyhnApDqi//zBd/yvBGBAwmlbq06//deuSTX6yogL21diTUcCCi70ChqewUvllkqBbh7xJYr2Mc6cHHAgMBAAE="    //华为开发者联盟上申请支付服务获取的“支付公钥”
+				
+				}				
+				alert("pay:"+JSON.stringify(params));
+	        HwFastappObject.pay(JSON.stringify(params));
+	        }
+
+
+</script>
+
+
+
+
+
+
+</body>
+</html>
