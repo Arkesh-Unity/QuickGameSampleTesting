@@ -56,21 +56,15 @@ div.center {
 </head>
 <body style="background-color:#9e46a8;">
 
-Name: <input type="text" id="myText" value="Mickey">
+//Name: <input type="text" id="myText" value="Mickey">
 
-<p>Click the button to change the value of the text field.</p>
+//<p>Click the button to change the value of the text field.</p>
 
-<button onclick="myFunction()">Try it</button>
+//<button onclick="myFunction()">Try it</button>
 
-<label id = "GFG"> 
-        Welcome to GeeksforGeeks 
-    </label> 
+// Name: <input type="text" id="myText" value="Mickey">
 
-
-
-Name: <input type="text" id="myText" value="Mickey">
-
-<div  style="margin-left: 22px;">
+//<div  style="margin-left: 22px;">
 
 <div class="row">
 
@@ -160,22 +154,25 @@ function myPay() {
   pay();
 
 }
-	function myPay() {
+function myPay() {
   pay();
-
 }
-	function myPay1() {
-  pay();
-
+							  
+function myPay1() {
+  productPay ();
 }
-	function myPay2() {
-  pay();
-
+							  
+function myPay2() {
+ productPay ();
 }
-							  function myPay3() {
-  pay();
-
+							  
+function myPay3() {
+ productPay ();
 }
+
+							  
+
+							  
 
 
 		function pay (){
@@ -196,6 +193,29 @@ function myPay() {
 				}				
 				alert("pay:"+JSON.stringify(params));
 	        HwFastappObject.pay(JSON.stringify(params));
+	        }
+		function productPay (){
+			var params = {"merchantId": "890086000000001051",
+                "applicationID": "103504135",
+                "requestId": "20201114025803669",
+                "productNo": "Gems_10",
+                "serviceCatalog":"1",
+                "merchantName":"d01",
+                "sdkChannel":1,
+                "publicKey": "MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEA3JA2BdT7JZ8mRI5VJFObbq/YbqwjZXFP+fEh4nKVrQYgdheSb9e91pB0MNsJtMFafetEVJSCdjK+ZVPiBpeKiRYgaXEmCoNERIHGRh4PcU7IzvGOG+W8uLDCYmqzuHqUBCNFxBbe7pRjhLTv8fI1S/QvDNE6j/sKRB9YHf1C3vhsWoN2TXjaGcMnfAPl7VfmShvezmOvFMS8VMwGB45wE/xTDrshvwdwDSNxkOKLVH5Zsg+2xAVyN2TEq9MP7zzIW9ybHfM1F4APnQyszclU6sGep7M5mMTm6jXQ1Dpz1TMH+NjprS6kkRuhZSATw3cBY/0dpHI8ehKUPOkLobqsZT0Zhyu5W4tRVRh3Fzasf2xAc9YDmtmg9SsqQSjkHZWFghdBLqE5exfpJ7KYaYIkKaz/vjWTJRQo2bO3UeCOMAqaqSE2AnyhnApDqi//zBd/yvBGBAwmlbq06//deuSTX6yogL21diTUcCCi70ChqewUvllkqBbh7xJYr2Mc6cHHAgMBAAE=",
+                "sign": auth_value,
+				}
+	        HwFastappObject.productPay(JSON.stringify(params));
+	        }
+
+	        HwFastappObject.onProductPayResult  = function onProductPayResult (str){
+			    alert("支付结果:sign:"+JSON.stringify(str));
+				var text = document.getElementById("text");
+				//text.innerHTML = JSON.stringify(str);
+				text.innerHTML = str;
+				system.postMessage("web call quickapp");
+			    console.log("yuli","productPay ="+JSON.stringify(str));
+		        
 	        }
 
 
