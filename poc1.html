@@ -150,7 +150,7 @@ div.center {
 <script>
 
 function myPay() {
-   pay ();
+  productPay ();
 }
 							  
 function myPay1() {
@@ -169,34 +169,17 @@ function myPay3() {
 var auth_value =  localStorage.getItem("Auth Value");
 							  
 
-
-		function pay (){
-			var params = {
-                "amount": 0.01,     //商品金额
-				"applicationID": "103504135",    //应用ID，在华为开发者联盟上获取的APP ID 
-				"productDesc": "d03",
-				"productName": "d03",
-				"serviceCatalog": "X5",    //游戏设置为"X6"，应用设置为"X5" 
-				"merchantId": "890086000000001051",    //华为开发者联盟上申请支付服务获取的“支付ID“
-				"merchantName": "d03",    //商户名称
-				"sign": auth_value,    //签名
-				"requestId": "20201111041031686",    //在支付前生成，用于唯一标识一次支付请求。支付平台在服务器回调接口中会原样返回requestId的值 
-				"urlver": "2",    //固定值为2
-				"sdkChannel": 1,    //游戏设置为3，应用设置为1
-				"publicKey": "MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEA3JA2BdT7JZ8mRI5VJFObbq/YbqwjZXFP+fEh4nKVrQYgdheSb9e91pB0MNsJtMFafetEVJSCdjK+ZVPiBpeKiRYgaXEmCoNERIHGRh4PcU7IzvGOG+W8uLDCYmqzuHqUBCNFxBbe7pRjhLTv8fI1S/QvDNE6j/sKRB9YHf1C3vhsWoN2TXjaGcMnfAPl7VfmShvezmOvFMS8VMwGB45wE/xTDrshvwdwDSNxkOKLVH5Zsg+2xAVyN2TEq9MP7zzIW9ybHfM1F4APnQyszclU6sGep7M5mMTm6jXQ1Dpz1TMH+NjprS6kkRuhZSATw3cBY/0dpHI8ehKUPOkLobqsZT0Zhyu5W4tRVRh3Fzasf2xAc9YDmtmg9SsqQSjkHZWFghdBLqE5exfpJ7KYaYIkKaz/vjWTJRQo2bO3UeCOMAqaqSE2AnyhnApDqi//zBd/yvBGBAwmlbq06//deuSTX6yogL21diTUcCCi70ChqewUvllkqBbh7xJYr2Mc6cHHAgMBAAE="    //华为开发者联盟上申请支付服务获取的“支付公钥”
-				
-				}				
-				alert("pay:"+JSON.stringify(params));
-	        HwFastappObject.pay(JSON.stringify(params));
-	        }
-		function productPay (){
+	
+		function productPay ()
+		{
+		      var randomValue = Math.floor((Math.random() * 100000000000000000) + 1);
 			var params = {
 				"merchantId": "2640091000001822147",
                 "applicationID": "103504135",
-		"requestId": "Temp_0111111",
+		"requestId": randomValue,
                 "productNo": "Gems_100",
 		"serviceCatalog":"X6",
-                "merchantName":"Ashok Silk Sarees",
+                "merchantName":"Ashok Kumar M R",
                 "sdkChannel":3,
                 "publicKey": "MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEApZgSgNd2QIIQ3HBRure/TyL7PFwlOt7pLpUCRwybnmcdQKLiO+La/Y8PSluekY/dx4sjOLIdjTk1zWeFHLQTlB2hMM47NHios3L6Zp/NK7oZ98Rm4fkLniOLt43Fyq7fwflMcO8qS3gywYzGY9zryejnIwVjsirxzCjh7tdPJFfhWJFV3gfGjhmQNvPGJd/ClKqUO6ujsGS9vI3DLnm3v2eh4PJiRJZjsHElurb/dVqMc7+xkQW2qRIhn3plEIWlzGDhG2aRqm+ud9RNuIrD4YuqJKtos09yBbu4Z0iijc/VqxovbETQ8JJvNL5zCOfrHz7LA1OJt6HrN4oabzVQ6EFKQPFdXbZHqHlgVrlu6VClxehTTRIpAWk8qZb29hc7xsMy48Fb3IZddUQxY3WSbl5/ekSFuVPluCDVnyb7B/t5vUkND6ZEdYZ0qlHM541/yOfHm8Cq1j6VhnmStJpsiX3cpeyZH3EXmhrFJ7ZwLOvdg9L56GSZ7gI+VnVqMtTDAgMBAAE=",
                 "sign": auth_value,
