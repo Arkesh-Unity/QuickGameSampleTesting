@@ -87,7 +87,8 @@ div.center {
         <label  style="color:#9e46a8;margin-left: 20px;" >250 Coins</label><br>
 	<label  style="color:white;margin-left: 20px;" >for INR 10</label>
 	<br>
-        <input id="buy_button" type="button" value="Buy" onclick="myPay1()">
+        <input   height: 40px; " type="button" value="Buy" onclick=" myPay()" >
+ type="button" value="Buy" onclick="myPay1()">
 
    </div>
   </div>
@@ -98,7 +99,8 @@ div.center {
 	<label  style="color:#9e46a8; margin-left: 20px;" >500 Coins</label><br>
 	<label  style="color:white; margin-left: 20px;" >for INR 15</label>
 	<br>
-        <input id="buy_button" type="button" value="Buy" onclick="myPay()2">
+        <input   height: 40px; " type="button" value="Buy" onclick=" myPay()" >
+ type="button" value="Buy" onclick="myPay()2">
     </div>
   </div> </div>
 
@@ -139,7 +141,7 @@ div.center {
 <script>
 
 function myPay() {
-  pay();
+   pay ();
 }
 							  
 function myPay1() {
@@ -155,7 +157,7 @@ function myPay3() {
 }
 
 							  
-
+var auth_value =  localStorage.getItem("Auth Value");
 							  
 
 
@@ -168,7 +170,7 @@ function myPay3() {
 				"serviceCatalog": "X5",    //游戏设置为"X6"，应用设置为"X5" 
 				"merchantId": "890086000000001051",    //华为开发者联盟上申请支付服务获取的“支付ID“
 				"merchantName": "d03",    //商户名称
-				"sign": "G+2TQxtDCl/OSVfXCxR165PZj7Tm1VOL3dl8UgKSlV6et5YSf+PDf3vqgrDwVIzqijC49OSd6I9DPxFZE8jBd6Rq3d6rwFDcgW6Z3OmXh54Q+UohrpqkTEXX7NPlxrfIQIOYnE67SU84c+vNrDQwtMCbLB58gYLpXUrFBnZBsVFy1xhPzQvYA2sjvaD+WwvKUAl/8NVq0oN6ux84dS60+ItUDS6EjIJGFEZO3iCHpkC3DZdY0GiLGO+rb7fgfqxyM4cEiqZ4wVxtkJcpdEJ6mLCFvSktEcQVjNzdVTuQzUYvQ0Gt3sxVxW/p3L/vJvx60rmwH1neU4M3ZqDXs1+nDg==",    //签名
+				"sign": auth_value,    //签名
 				"requestId": "20201111041031686",    //在支付前生成，用于唯一标识一次支付请求。支付平台在服务器回调接口中会原样返回requestId的值 
 				"urlver": "2",    //固定值为2
 				"sdkChannel": 1,    //游戏设置为3，应用设置为1
