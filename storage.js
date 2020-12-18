@@ -78,7 +78,27 @@ export function getLoginDetails(){
         console.log("getLoginDetails() called");
     }
     
+export function saveGameAuthSingIn(gameauthsignin){
+    if(typeof(Storage) !== "undefined"){
+        localStorage.setItem(GAME_AUTH_SIGNIN, gameauthsignin);
+         console.log("Local storage supported!");
+    }
+    else{
+        console.log("Local storage not supported!");
+    }
+    console.log("saveGameAuthSingIn() called");
+}
 
+export function getGameAuthSingIn(){
+    if(typeof(Storage) !== "undefined"){
+        return localStorage.getItem(GAME_AUTH_SIGNIN);
+        console.log("Local storage supported!");
+    }
+    else{
+        console.log("Local storage not supported!");
+    }
+    console.log("getGameAuthSingIn() called");
+}
 
 
 
