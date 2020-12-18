@@ -20,8 +20,9 @@ function myFunction() {
        console.log("krishna login result str.gameUserData.playerLevel "+str.gameUserData.playerLevel);
        console.log("krishna login result str.gameUserData.ts "+str.gameUserData.ts);
 // {"code":0,"data":"Login SUCCESS", "gameUserData":{"displayName":"xx","gameAuthSign":"xx","isAuth":1,"playerId":"xx","playerLevel":x,"ts":"xxx"}}
-        storageJs.saveLoginDetails(str.code,str.data,str.gameUserData.displayName,str.gameUserData.gameAuthSign,
-        str.gameUserData.isAuth,str.gameUserData.playerId,str.gameUserData.playerLevel,str.gameUserData.ts);
+      
+        // storageJs.saveLoginDetails(str.code,str.data,str.gameUserData.displayName,str.gameUserData.gameAuthSign,
+       // str.gameUserData.isAuth,str.gameUserData.playerId,str.gameUserData.playerLevel,str.gameUserData.ts);
 
        document.location.href="https://htmlpreview.github.io/?https://github.com/Arkesh-Unity/QuickGameSampleTesting/blob/main/home.html"
       
