@@ -52,12 +52,14 @@
             console.log("ashok login result str.gameUserData.playerLevel "+str.gameUserData.playerLevel);
             console.log("ashok login result str.gameUserData.ts "+str.gameUserData.ts);
                
-               if (typeof(Storage) !== "undefined") {
+                localStorage.setItem("Auth Value", str.gameUserData.gameAuthSign);
+               
+            //   if (typeof(Storage) !== "undefined") {
               // Store
-              localStorage.setItem("Auth Value", str.gameUserData.gameAuthSign);
-               } else {
+            //  localStorage.setItem("Auth Value", str.gameUserData.gameAuthSign);
+              // } else {
                 // document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Storage...";
-               }
+              // }
             
             success = 0;
           //  document.getElementById("resultnew").innerHTML = str.code; // code
