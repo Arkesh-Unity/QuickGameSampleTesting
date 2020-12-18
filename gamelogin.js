@@ -1,6 +1,6 @@
 
 
-import * as storageJs from './storage.js';
+//import * as storageJs from './storage.js';
 function myFunction() {
     //window.location.href="home.html" 
     
