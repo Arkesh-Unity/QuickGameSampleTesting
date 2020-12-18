@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+/* Create two equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 50%;
+  padding: 10px; /* Should be removed. Only for demonstration */
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+div.c {
+  text-align: right;
+} 
+div.center {
+  text-align: center;
+} 
+
+.column 
+{
+  float: left;
+  width: 50%;
+  padding: 30px;
+}
+
+#rcorners1 {
+  border-radius: 15px;
+  background: #ffaec9;
+  padding: 20px; 
+  width: 100%;
+  height: 150px;  
+  text-align:center;
+border: 1px solid white;
+}
+
+
+#rcorners2 {
+  border-radius: 25px;
+  background: #73AD21;
+  padding: 20px; 
+  width: 100px;
+  height: 75px;  
+}
+
+#inner {
+  display: block;
+}
+
+
+#buy_button 
+{  
+  background: #9e46a8;
+  width: 100px;
+  height: 40px;  
+}
+
+</style>
+</head>
+<body style="background-color:#9e46a8;">
+
+<div class="row">
+  <div class="column">
+       <div  style="text-align:left;"><label style="color:white;font-family:Segoe UI;">Score: </label><label style="color:white; font-family:Segoe UI;">100000</label> </div>
+  </div>
+  <div class="column" >
+    <div  style="text-align:right;"><label style="color:white;font-family:Segoe UI;">Coin: </label><label style="color:white;font-family:Segoe UI">83</label> </div>
+  </div>
+</div>
+
+<div class="row">
+
+<div class="row">
+  <div style="height:5px">
+  </div>
+</div>
+ 
+
+<div class="row">
+  <div>
+       <div  style="text-align:center;"><label style="color:white;font-family:Segoe UI;">Store </label> </div>
+  </div>
+  
+</div>
+
+<div class="row">
+  <div style="height:5px">
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+        <div id="rcorners1" >
+        <div><label  style="color:#9e46a8;margin-left: 20px;font-family:Segoe UI;" >250 Coins</label></div>
+	<div style="height:10px"></div>
+	<div><label  style="color:white;margin-left: 20px;font-family:Segoe UI;" >for INR 10</label></div>
+	<div style="height:10px"></div>
+        <div><input style="background: #9e46a8;width: 100px;height: 40px; border: none; outline: none"   type="button" value="Buy" onclick="myPay()"  ></div>
+   </div>
+  </div>
+  <div class="column" >
+       <div id="rcorners1" >
+        <div><label  style="color:#9e46a8;margin-left: 20px;font-family:Segoe UI;" >500 Coins</label></div>
+	<div style="height:10px"></div>
+	<div><label  style="color:white;margin-left: 20px;font-family:Segoe UI;" >for INR 10</label></div>
+	<div style="height:10px"></div>
+        <div><input style="background: #9e46a8;width: 100px;height: 40px; border: none; outline: none " type="button" value="Buy" onclick="myPay1()"  ></div>
+   </div>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="column">
+        <div id="rcorners1" >
+         <div><label  style="color:#9e46a8;margin-left: 20px;font-family:Segoe UI;" >750 Coins</label></div>
+	<div style="height:10px"></div>
+	<div><label  style="color:white;margin-left: 20px;font-family:Segoe UI;" >for INR 10</label></div>
+	<div style="height:10px"></div>
+        <div><input style="background: #9e46a8;width: 100px;height: 40px; border: none; outline: none " type="button" value="Buy" onclick="myPay2()" ></div>
+   </div>
+  </div>
+  <div class="column">
+      <div id="rcorners1" >
+         <div><label  style="color:#9e46a8;margin-left: 20px;font-family:Segoe UI;" >1000 Coins</label></div>
+         <div style="height:10px"></div>
+	<div><label  style="color:white;margin-left: 20px;font-family:Segoe UI;" >for INR 10</label></div>
+	<div style="height:10px"></div>
+        <div><input  style="background: #9e46a8;width: 100px;height: 40px; border: none; outline: none" type="button" value="Buy" onclick="myPay()3" ></div>
+   </div>
+    </div>
+   </div>
+  </div>
+</div>
+
+<script>
+
+function myPay() {
+  getProductDetails ();
+
+}
+							  
+function myPay1() {
+  getProductDetails ();
+}
+							  
+function myPay2() {
+ productPay ();
+}
+							  
+function myPay3() {
+ productPay ();
+}
+
+							  
+var auth_value =  localStorage.getItem("Auth Value");
+							  
+ console.log("yuli","productPay ="+ auth_value);
+	
+		function productPay ()
+		{
+		      var randomValue = Math.floor((Math.random() * 100000000000000000) + 1);
+			var params = {
+				"merchantId": "2640091000001822147",
+                "applicationID": "103504135",
+		"requestId": randomValue,
+                "productNo": "Gems_100",
+		"serviceCatalog":"X6",
+                "merchantName":"Ashok Kumar M R",
+                "sdkChannel":3,
+                "publicKey": "MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEApZgSgNd2QIIQ3HBRure/TyL7PFwlOt7pLpUCRwybnmcdQKLiO+La/Y8PSluekY/dx4sjOLIdjTk1zWeFHLQTlB2hMM47NHios3L6Zp/NK7oZ98Rm4fkLniOLt43Fyq7fwflMcO8qS3gywYzGY9zryejnIwVjsirxzCjh7tdPJFfhWJFV3gfGjhmQNvPGJd/ClKqUO6ujsGS9vI3DLnm3v2eh4PJiRJZjsHElurb/dVqMc7+xkQW2qRIhn3plEIWlzGDhG2aRqm+ud9RNuIrD4YuqJKtos09yBbu4Z0iijc/VqxovbETQ8JJvNL5zCOfrHz7LA1OJt6HrN4oabzVQ6EFKQPFdXbZHqHlgVrlu6VClxehTTRIpAWk8qZb29hc7xsMy48Fb3IZddUQxY3WSbl5/ekSFuVPluCDVnyb7B/t5vUkND6ZEdYZ0qlHM541/yOfHm8Cq1j6VhnmStJpsiX3cpeyZH3EXmhrFJ7ZwLOvdg9L56GSZ7gI+VnVqMtTDAgMBAAE=",
+                "sign": auth_value,
+				}
+	        HwFastappObject.productPay(JSON.stringify(params));
+	        }
+
+	        HwFastappObject.onProductPayResult  = function onProductPayResult (str){
+			    alert("支付结果:sign:"+JSON.stringify(str));
+				var text = document.getElementById("text");
+				//text.innerHTML = JSON.stringify(str);
+				text.innerHTML = str;
+				system.postMessage("web call quickapp");
+			    console.log("yuli","productPay ="+JSON.stringify(str));
+		        
+	        }
+	
+	function getProductDetails ()
+	{
+		
+		 var randomValue = Math.floor((Math.random() * 100000000000000000) + 1);
+		
+		    var params = {
+			    "merchantId": "2640091000001822147",
+                "applicationID": "103504135",
+                "requestId": randomValue,
+                "productNos": "Gems_100",}
+	        HwFastappObject.getProductDetails(JSON.stringify(params));
+	        }
+
+	        HwFastappObject.onGetProductDetailsResult  = function onGetProductDetailsResult (str){
+			    alert("查询结果:sign:"+JSON.stringify(str));
+				var text = document.getElementById("text");
+				//text.innerHTML = JSON.stringify(str);
+				text.innerHTML = str;
+				system.postMessage("web call quickapp");
+			    console.log("yuli","onGetProductDetailsResult ="+JSON.stringify(str));
+		        
+	        }	
+	
+
+
+</script>
+
+
+
+</body>
+</html>
