@@ -150,11 +150,11 @@ div.center {
 <script>
 
 function myPay() {
-  productPay ();
+  getProductDetails ();
 }
 							  
 function myPay1() {
-  productPay ();
+  getProductDetails ();
 }
 							  
 function myPay2() {
@@ -196,6 +196,30 @@ var auth_value =  localStorage.getItem("Auth Value");
 			    console.log("yuli","productPay ="+JSON.stringify(str));
 		        
 	        }
+	
+	function getProductDetails ()
+	{
+		
+		 var randomValue = Math.floor((Math.random() * 100000000000000000) + 1);
+		
+		    var params = {
+			    "merchantId": "2640091000001822147",
+                "applicationID": "101541297",
+                "requestId": randomValue,
+                "productNos": "d01|d02",}
+	        HwFastappObject.getProductDetails(JSON.stringify(params));
+	        }
+
+	        HwFastappObject.onGetProductDetailsResult  = function onGetProductDetailsResult (str){
+			    alert("查询结果:sign:"+JSON.stringify(str));
+				var text = document.getElementById("text");
+				//text.innerHTML = JSON.stringify(str);
+				text.innerHTML = str;
+				system.postMessage("web call quickapp");
+			    console.log("yuli","onGetProductDetailsResult ="+JSON.stringify(str));
+		        
+	        }	
+	
 
 
 </script>
