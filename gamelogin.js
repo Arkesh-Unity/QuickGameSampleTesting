@@ -3,7 +3,7 @@
 function myFunction() {
     window.location.href="home.html" 
     
-    var params = { "appid": "103398347", "forceLogin": "1" }
+    var params = { "appid": "103462861", "forceLogin": "1" }
      HwFastappObject.gameLogin(JSON.stringify(params));
      }
      HwFastappObject.onGameLoginResult = function onGameLoginResult(str) {
