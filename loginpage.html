@@ -39,65 +39,7 @@
          padding-left: 20%;padding-right: 20%;padding-top: 5%;padding-bottom: 5%; margin-left: 20%;
          bottom: 10%;position: absolute; ">Huawei Login</a> -->
           
-   <script>
-      
-      
-           //store user role information for intermodal activities
-           function savePlayerInfo(){
-		          var params = {"appid":"103462861","gamesize":"three"}
-	             HwFastappObject.savePlayerInfo(JSON.stringify(params));
-	        }
-           HwFastappObject.onSavePlayerInfoResult = function onSavePlayerInfoResult(str){
-		     //document.getElementById("resultsave").innerHTML= str.code;
-           console.log("krishna onSavePlayerInfoResult result  str "+str);
-          // console.log("krishna onSavePlayerInfoResult result str.data "+str.data);
-           //console.log("krishna onSavePlayerInfoResult result str.code "+str.code);
-           console.log("krishna onSavePlayerInfoResult result str.gamesize "+str.gamesize);
-	   console.log("krishna onSavePlayerInfoResult result str.gameUserData.gamesize "+str.gameUserData.gamesize);
-           //console.log("krishna onSavePlayerInfoResult result str.gameUserData.displayName "+str.gameUserData.displayName);
-          // console.log("krishna onSavePlayerInfoResult result str.gameUserData.gameAuthSign "+str.gameUserData.gameAuthSign);
-          // console.log("krishna onSavePlayerInfoResult result str.gameUserData.isAuth "+str.gameUserData.isAuth);
-          // console.log("krishna onSavePlayerInfoResult result str.gameUserData.playerId "+str.gameUserData.playerId);
-           //console.log("krishna onSavePlayerInfoResult result str.gameUserData.playerLevel "+str.gameUserData.playerLevel);
-           //console.log("krishna onSavePlayerInfoResult result str.gameUserData.ts "+str.gameUserData.ts);
-	      }
-      
-         function myFunction() {
-            var params = { "appid": "103462861", "forceLogin": "1" }
-            HwFastappObject.gameLogin(JSON.stringify(params));
-             }
-
-            HwFastappObject.onGameLoginResult = function onGameLoginResult(str) {
-            //Mark
-               
-             console.log("krishna login result  str "+str);
-             console.log("krishna login result str.data "+str.data);
-             console.log("krishna login result str.code "+str.code);
-             console.log("krishna login result str.gameUserData.displayName "+str.gameUserData.displayName);
-            console.log("krishna login result str.gameUserData.gameAuthSign "+str.gameUserData.gameAuthSign);
-            console.log("krishna login result str.gameUserData.isAuth "+str.gameUserData.isAuth);
-            console.log("krishna login result str.gameUserData.playerId "+str.gameUserData.playerId);
-            console.log("krishna login result str.gameUserData.playerLevel "+str.gameUserData.playerLevel);
-            console.log("krishna login result str.gameUserData.ts "+str.gameUserData.ts);
-               
-            
-            success = 0;
-          //  document.getElementById("resultnew").innerHTML = str.code; // code
-            //document.getElementById("result").innerHTML = str.data; // name 
-
-              // if (confirm("Welcome "+str.data+"")) {
-               //document.location.href="https://htmlpreview.github.io/?https://github.com/Arkesh-Unity/QuickGameSampleTesting/blob/main/home.html"  test_login.html //} 
-         //document.location.href="https://htmlpreview.github.io/?https://github.com/Arkesh-Unity/QuickGameSampleTesting/blob/main/test_login.html"
-           //savePlayerInfo();
-		    //else {
-               // Do nothing!
-               //console.log('Thing was not saved to the database.');
-               //window.location.href="home.html"
-               //}
-
-         
-        }
-
+   <script type='text/javascript' src='gamelogin.js'>
    </script>
 </body>
 </html> 
