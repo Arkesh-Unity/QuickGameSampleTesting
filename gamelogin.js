@@ -1,7 +1,7 @@
 
 
 function myFunction() {
-    window.location.href="home.html" 
+    //window.location.href="home.html" 
     
     var params = { "appid": "103462861", "forceLogin": "1" }
      HwFastappObject.gameLogin(JSON.stringify(params));
@@ -19,7 +19,7 @@ function myFunction() {
        console.log("krishna login result str.gameUserData.playerLevel "+str.gameUserData.playerLevel);
        console.log("krishna login result str.gameUserData.ts "+str.gameUserData.ts);
 
-       //document.location.href="https://htmlpreview.github.io/?https://github.com/Arkesh-Unity/QuickGameSampleTesting/blob/main/home.html"
+       document.location.href="https://htmlpreview.github.io/?https://github.com/Arkesh-Unity/QuickGameSampleTesting/blob/main/home.html"
       
     } else {
         console.log("krishna login result game login failed status code "+str.code );
