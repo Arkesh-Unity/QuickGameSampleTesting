@@ -1,20 +1,20 @@
 import * as storageJs from './storage.js';
 
-function myPlay() {
-    window.location.href="bubble-shooter-changes.html" }
+ function myPlay() {
+          document.location.href="https://htmlpreview.github.io/?https://github.com/Arkesh-Unity/QuickGameSampleTesting/blob/main/bubble-shooter.html" 
+          // document.location.href="https://htmlpreview.github.io/?https://github.com/Arkesh-Unity/QuickGameSampleTesting/blob/main/home.html"
+ }
+      
+ function myLogout() {
+          console.log("Inside leaderboard");
+          storageJs.getLoginDetails();
+ }
 
-     // function myPlay() {
-     // $("#myModal").modal({backdrop: true}); }
+ function myLeaderboard() {
+          document.location.href="https://htmlpreview.github.io/?https://github.com/Arkesh-Unity/QuickGameSampleTesting/blob/main/leaderboard.html" }
 
-     //function myLogout() {
-     // window.location.href=".html" }
-     function myLeaderboard() {
-     window.location.href="leaderboard.html"
-    
-     
-    }
-     //function mytore() {
-     //window.location.href="save.html" }
-       
-  function myStore() {
-     window.location.href="iap.html" }
+ //function mytore() {
+        //window.location.href="save.html" }
+
+function myStore() {
+            document.location.href="https://htmlpreview.github.io/?https://github.com/Arkesh-Unity/QuickGameSampleTesting/blob/main/iap.html" }
