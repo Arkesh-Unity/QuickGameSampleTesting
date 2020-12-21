@@ -65,6 +65,15 @@ div.center {
   width: 100px;
   height: 40px;  
 }
+	
+.child {
+  width: 50px;
+  height: 50px;
+  background-color: red;
+  /* Center vertically */
+  position: absolute;
+  top: 50%;
+}
 
 </style>
 </head>
@@ -102,21 +111,25 @@ div.center {
 <div class="row">
   <div class="column">
         <div id="rcorners1" >
+		<div class="child">
         <div style="top: 50%;"><label  style="color:#9e46a8;font-family:Segoe UI;" >250 Coins</label></div>
 	<div style="height:10px"></div>
 	<div><label  style="color:white;font-family:Segoe UI;" >for INR 10</label></div>
 	<div style="height:10px"></div>
         <div><input style="background: #9e46a8;width: 50%;height: 40px; color:white; border: none; outline: none"   type="button" value="Buy" onclick="myPay()"  ></div>
+		</div>
    </div>
   </div>
   <div class="column" >
        <div id="rcorners1" >
+	       <div class="child">
         <div style="top: 50%;"><label  style="color:#9e46a8;font-family:Segoe UI;" >500 Coins</label></div>
 	<div style="height:10px"></div>
 	<div><label  style="color:white;font-family:Segoe UI;" >for INR 10</label></div>
 	<div style="height:10px"></div>
         <div><input style="background: #9e46a8;width: 50%; color:white; height: 40px; border: none; outline: none " type="button" value="Buy" onclick="myPay1()"  ></div>
-   </div>
+	       </div>
+  </div>
   </div>
 </div>
 
@@ -124,21 +137,25 @@ div.center {
 <div class="row">
   <div class="column">
         <div id="rcorners1" >
+		<div class="child">
          <div style="top: 50%;"><label  style="color:#9e46a8;margin-left: 20px;font-family:Segoe UI;font-size:5vw;" >750 Coins</label></div>
 	<div style="height:10px"></div>
 	<div><label  style="color:white;margin-left: 20px;font-family:Segoe UI;font-size:5vw;" >for INR 10</label></div>
 	<div style="height:10px"></div>
         <div><input style="background: #9e46a8;width: 50%; color:white; height: 40px; border: none; outline: none " type="button" value="Buy" onclick="myPay2()" ></div>
+	</div>
    </div>
   </div>
   <div class="column">
       <div id="rcorners1" >
+	      <div class="child">
          <div style="top: 50%;"><label  style="color:#9e46a8;margin-left: 20px;font-family:Segoe UI;font-size:5vw;" >1000 Coins</label></div>
          <div style="height:10px"></div>
 	<div><label  style="color:white;margin-left: 20px;font-family:Segoe UI;" >for INR 10</label></div>
 	<div style="height:10px"></div>
 	<div><label  style="color:white;margin-left: 20px;font-family:Segoe UI;" >for INR 10</label></div>
         <div><input  style="background: #9e46a8;width: 50%; color:white;height: 40px; border: none; outline: none" type="button" value="Buy" onclick="myPay()3" ></div>
+		      <div >
    </div>
     </div>
    </div>
