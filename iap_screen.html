@@ -175,14 +175,15 @@ var auth_value =  localStorage.getItem("Auth Value");
 			console.log("Random Value ="+ auth_value);
 			
 			var params = {
-				"merchantId": "890244000000000009",
-                "applicationID": "103534381",
+				"merchantId": "2640091000001822147",
+                "applicationID": "103504135",
 		"requestId": randomValue,
                 "productNo": "Coin_250",
 		"serviceCatalog":"X6",
                 "merchantName":"HuaweiDeveloperTest",
                 "sdkChannel":3,
-                "publicKey": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAudlk1A9zlsDfCI7oRftLR5cvn3M8Co1jVDLTB4exb/bcdQN44lRVRvqE82fv3zVrgstMSwTI/vGi6N+fbJwZT8FJ1Hpy1DJr4N3b1crZtpsFFNSBQd+U3OBNFvK8KCep1gN4XLLTYqKPaXmSaJIYdNTf+KpXLKTxIX2qsNGoe0RxvLv0kg1DE91mMmOmiU+jU82tIURj/y5geC4Dcn5DbeUEQiOLTwPNdqL1/HVmmWKGwJO1lMdUDD8WA/EftKRh2Cmwy8Agdee/4HQ9x9JnokqjbQjpJYcOXg/9U7xAvseIMV7c/M2To15pIbF8WGtKH7Skcy+ThrTuHTXOQOrYYQIDAQAB",
+		"urlver":"2",		
+                "publicKey": "MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEA3JA2BdT7JZ8mRI5VJFObbq/YbqwjZXFP+fEh4nKVrQYgdheSb9e91pB0MNsJtMFafetEVJSCdjK+ZVPiBpeKiRYgaXEmCoNERIHGRh4PcU7IzvGOG+W8uLDCYmqzuHqUBCNFxBbe7pRjhLTv8fI1S/QvDNE6j/sKRB9YHf1C3vhsWoN2TXjaGcMnfAPl7VfmShvezmOvFMS8VMwGB45wE/xTDrshvwdwDSNxkOKLVH5Zsg+2xAVyN2TEq9MP7zzIW9ybHfM1F4APnQyszclU6sGep7M5mMTm6jXQ1Dpz1TMH+NjprS6kkRuhZSATw3cBY/0dpHI8ehKUPOkLobqsZT0Zhyu5W4tRVRh3Fzasf2xAc9YDmtmg9SsqQSjkHZWFghdBLqE5exfpJ7KYaYIkKaz/vjWTJRQo2bO3UeCOMAqaqSE2AnyhnApDqi//zBd/yvBGBAwmlbq06//deuSTX6yogL21diTUcCCi70ChqewUvllkqBbh7xJYr2Mc6cHHAgMBAAE=",
                 "sign": auth_value,
 				}
 	        HwFastappObject.productPay(JSON.stringify(params));
@@ -204,8 +205,8 @@ var auth_value =  localStorage.getItem("Auth Value");
 		 var randomValue = Math.floor((Math.random() * 100000000000000000) + 1);
 		
 		    var params = {
-			    "merchantId": "890244000000000009",
-                "applicationID": "103534381",
+			    "merchantId": "2640091000001822147",
+                "applicationID": "103504135",
                 "requestId": randomValue,
                 "productNos": "Coin_250",}
 	        HwFastappObject.getProductDetails(JSON.stringify(params));
