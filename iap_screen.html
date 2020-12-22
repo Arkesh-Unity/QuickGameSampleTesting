@@ -171,6 +171,9 @@ var auth_value =  localStorage.getItem("Auth Value");
 		function productPay ()
 		{
 		      var randomValue = Math.floor((Math.random() * 100000000000000000) + 1);
+			
+			console.log("Random Value ="+ auth_value);
+			
 			var params = {
 				"merchantId": "890244000000000009",
                 "applicationID": "103534381",
