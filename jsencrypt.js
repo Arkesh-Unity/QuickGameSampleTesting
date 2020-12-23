@@ -1496,3 +1496,503 @@ var BigInteger = /** @class */ (function () {
                 v.subTo(u, v);
                 if (ac) {
                     c.subTo(a, c);
+		
+                }
+                d.subTo(b, d);
+            }
+        }
+        if (v.compareTo(BigInteger.ONE) != 0) {
+            return BigInteger.ZERO;
+        }
+        if (d.compareTo(m) >= 0) {
+            return d.subtract(m);
+        }
+        if (d.signum() < 0) {
+            d.addTo(m, d);
+        }
+        else {
+            return d;
+        }
+        if (d.signum() < 0) {
+            return d.add(m);
+        }
+        else {
+            return d;
+        }
+    };
+    // BigInteger.prototype.pow = bnPow;
+    // (public) this^e
+    BigInteger.prototype.pow = function (e) {
+        return this.exp(e, new NullExp());
+    };
+    // BigInteger.prototype.gcd = bnGCD;
+    // (public) gcd(this,a) (HAC 14.54)
+    BigInteger.prototype.gcd = function (a) {
+        var x = (this.s < 0) ? this.negate() : this.clone();
+        var y = (a.s < 0) ? a.negate() : a.clone();
+        if (x.compareTo(y) < 0) {
+            var t = x;
+            x = y;
+            y = t;
+        }
+        var i = x.getLowestSetBit();
+        var g = y.getLowestSetBit();
+        if (g < 0) {
+            return x;
+        }
+        if (i < g) {
+            g = i;
+        }
+        if (g > 0) {
+            x.rShiftTo(g, x);
+            y.rShiftTo(g, y);
+        }
+        while (x.signum() > 0) {
+            if ((i = x.getLowestSetBit()) > 0) {
+                x.rShiftTo(i, x);
+            }
+            if ((i = y.getLowestSetBit()) > 0) {
+                y.rShiftTo(i, y);
+            }
+            if (x.compareTo(y) >= 0) {
+                x.subTo(y, x);
+                x.rShiftTo(1, x);
+            }
+            else {
+                y.subTo(x, y);
+                y.rShiftTo(1, y);
+            }
+        }
+        if (g > 0) {
+            y.lShiftTo(g, y);
+        }
+        return y;
+    };
+    // BigInteger.prototype.isProbablePrime = bnIsProbablePrime;
+    // (public) test primality with certainty >= 1-.5^t
+    BigInteger.prototype.isProbablePrime = function (t) {
+        var i;
+        var x = this.abs();
+        if (x.t == 1 && x[0] <= lowprimes[lowprimes.length - 1]) {
+            for (i = 0; i < lowprimes.length; ++i) {
+                if (x[0] == lowprimes[i]) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        if (x.isEven()) {
+            return false;
+        }
+        i = 1;
+        while (i < lowprimes.length) {
+            var m = lowprimes[i];
+            var j = i + 1;
+            while (j < lowprimes.length && m < lplim) {
+                m *= lowprimes[j++];
+            }
+            m = x.modInt(m);
+            while (i < j) {
+                if (m % lowprimes[i++] == 0) {
+                    return false;
+                }
+            }
+        }
+        return x.millerRabin(t);
+    };
+    //#endregion PUBLIC
+    //#region PROTECTED
+    // BigInteger.prototype.copyTo = bnpCopyTo;
+    // (protected) copy this to r
+    BigInteger.prototype.copyTo = function (r) {
+        for (var i = this.t - 1; i >= 0; --i) {
+            r[i] = this[i];
+        }
+        r.t = this.t;
+        r.s = this.s;
+    };
+    // BigInteger.prototype.fromInt = bnpFromInt;
+    // (protected) set from integer value x, -DV <= x < DV
+    BigInteger.prototype.fromInt = function (x) {
+        this.t = 1;
+        this.s = (x < 0) ? -1 : 0;
+        if (x > 0) {
+            this[0] = x;
+        }
+        else if (x < -1) {
+            this[0] = x + this.DV;
+        }
+        else {
+            this.t = 0;
+        }
+    };
+    // BigInteger.prototype.fromString = bnpFromString;
+    // (protected) set from string and radix
+    BigInteger.prototype.fromString = function (s, b) {
+        var k;
+        if (b == 16) {
+            k = 4;
+        }
+        else if (b == 8) {
+            k = 3;
+        }
+        else if (b == 256) {
+            k = 8;
+            /* byte array */
+        }
+        else if (b == 2) {
+            k = 1;
+        }
+        else if (b == 32) {
+            k = 5;
+        }
+        else if (b == 4) {
+            k = 2;
+        }
+        else {
+            this.fromRadix(s, b);
+            return;
+        }
+        this.t = 0;
+        this.s = 0;
+        var i = s.length;
+        var mi = false;
+        var sh = 0;
+        while (--i >= 0) {
+            var x = (k == 8) ? (+s[i]) & 0xff : intAt(s, i);
+            if (x < 0) {
+                if (s.charAt(i) == "-") {
+                    mi = true;
+                }
+                continue;
+            }
+            mi = false;
+            if (sh == 0) {
+                this[this.t++] = x;
+            }
+            else if (sh + k > this.DB) {
+                this[this.t - 1] |= (x & ((1 << (this.DB - sh)) - 1)) << sh;
+                this[this.t++] = (x >> (this.DB - sh));
+            }
+            else {
+                this[this.t - 1] |= x << sh;
+            }
+            sh += k;
+            if (sh >= this.DB) {
+                sh -= this.DB;
+            }
+        }
+        if (k == 8 && ((+s[0]) & 0x80) != 0) {
+            this.s = -1;
+            if (sh > 0) {
+                this[this.t - 1] |= ((1 << (this.DB - sh)) - 1) << sh;
+            }
+        }
+        this.clamp();
+        if (mi) {
+            BigInteger.ZERO.subTo(this, this);
+        }
+    };
+    // BigInteger.prototype.clamp = bnpClamp;
+    // (protected) clamp off excess high words
+    BigInteger.prototype.clamp = function () {
+        var c = this.s & this.DM;
+        while (this.t > 0 && this[this.t - 1] == c) {
+            --this.t;
+        }
+    };
+    // BigInteger.prototype.dlShiftTo = bnpDLShiftTo;
+    // (protected) r = this << n*DB
+    BigInteger.prototype.dlShiftTo = function (n, r) {
+        var i;
+        for (i = this.t - 1; i >= 0; --i) {
+            r[i + n] = this[i];
+        }
+        for (i = n - 1; i >= 0; --i) {
+            r[i] = 0;
+        }
+        r.t = this.t + n;
+        r.s = this.s;
+    };
+    // BigInteger.prototype.drShiftTo = bnpDRShiftTo;
+    // (protected) r = this >> n*DB
+    BigInteger.prototype.drShiftTo = function (n, r) {
+        for (var i = n; i < this.t; ++i) {
+            r[i - n] = this[i];
+        }
+        r.t = Math.max(this.t - n, 0);
+        r.s = this.s;
+    };
+    // BigInteger.prototype.lShiftTo = bnpLShiftTo;
+    // (protected) r = this << n
+    BigInteger.prototype.lShiftTo = function (n, r) {
+        var bs = n % this.DB;
+        var cbs = this.DB - bs;
+        var bm = (1 << cbs) - 1;
+        var ds = Math.floor(n / this.DB);
+        var c = (this.s << bs) & this.DM;
+        for (var i = this.t - 1; i >= 0; --i) {
+            r[i + ds + 1] = (this[i] >> cbs) | c;
+            c = (this[i] & bm) << bs;
+        }
+        for (var i = ds - 1; i >= 0; --i) {
+            r[i] = 0;
+        }
+        r[ds] = c;
+        r.t = this.t + ds + 1;
+        r.s = this.s;
+        r.clamp();
+    };
+    // BigInteger.prototype.rShiftTo = bnpRShiftTo;
+    // (protected) r = this >> n
+    BigInteger.prototype.rShiftTo = function (n, r) {
+        r.s = this.s;
+        var ds = Math.floor(n / this.DB);
+        if (ds >= this.t) {
+            r.t = 0;
+            return;
+        }
+        var bs = n % this.DB;
+        var cbs = this.DB - bs;
+        var bm = (1 << bs) - 1;
+        r[0] = this[ds] >> bs;
+        for (var i = ds + 1; i < this.t; ++i) {
+            r[i - ds - 1] |= (this[i] & bm) << cbs;
+            r[i - ds] = this[i] >> bs;
+        }
+        if (bs > 0) {
+            r[this.t - ds - 1] |= (this.s & bm) << cbs;
+        }
+        r.t = this.t - ds;
+        r.clamp();
+    };
+    // BigInteger.prototype.subTo = bnpSubTo;
+    // (protected) r = this - a
+    BigInteger.prototype.subTo = function (a, r) {
+        var i = 0;
+        var c = 0;
+        var m = Math.min(a.t, this.t);
+        while (i < m) {
+            c += this[i] - a[i];
+            r[i++] = c & this.DM;
+            c >>= this.DB;
+        }
+        if (a.t < this.t) {
+            c -= a.s;
+            while (i < this.t) {
+                c += this[i];
+                r[i++] = c & this.DM;
+                c >>= this.DB;
+            }
+            c += this.s;
+        }
+        else {
+            c += this.s;
+            while (i < a.t) {
+                c -= a[i];
+                r[i++] = c & this.DM;
+                c >>= this.DB;
+            }
+            c -= a.s;
+        }
+        r.s = (c < 0) ? -1 : 0;
+        if (c < -1) {
+            r[i++] = this.DV + c;
+        }
+        else if (c > 0) {
+            r[i++] = c;
+        }
+        r.t = i;
+        r.clamp();
+    };
+    // BigInteger.prototype.multiplyTo = bnpMultiplyTo;
+    // (protected) r = this * a, r != this,a (HAC 14.12)
+    // "this" should be the larger one if appropriate.
+    BigInteger.prototype.multiplyTo = function (a, r) {
+        var x = this.abs();
+        var y = a.abs();
+        var i = x.t;
+        r.t = i + y.t;
+        while (--i >= 0) {
+            r[i] = 0;
+        }
+        for (i = 0; i < y.t; ++i) {
+            r[i + x.t] = x.am(0, y[i], r, i, 0, x.t);
+        }
+        r.s = 0;
+        r.clamp();
+        if (this.s != a.s) {
+            BigInteger.ZERO.subTo(r, r);
+        }
+    };
+    // BigInteger.prototype.squareTo = bnpSquareTo;
+    // (protected) r = this^2, r != this (HAC 14.16)
+    BigInteger.prototype.squareTo = function (r) {
+        var x = this.abs();
+        var i = r.t = 2 * x.t;
+        while (--i >= 0) {
+            r[i] = 0;
+        }
+        for (i = 0; i < x.t - 1; ++i) {
+            var c = x.am(i, x[i], r, 2 * i, 0, 1);
+            if ((r[i + x.t] += x.am(i + 1, 2 * x[i], r, 2 * i + 1, c, x.t - i - 1)) >= x.DV) {
+                r[i + x.t] -= x.DV;
+                r[i + x.t + 1] = 1;
+            }
+        }
+        if (r.t > 0) {
+            r[r.t - 1] += x.am(i, x[i], r, 2 * i, 0, 1);
+        }
+        r.s = 0;
+        r.clamp();
+    };
+    // BigInteger.prototype.divRemTo = bnpDivRemTo;
+    // (protected) divide this by m, quotient and remainder to q, r (HAC 14.20)
+    // r != q, this != m.  q or r may be null.
+    BigInteger.prototype.divRemTo = function (m, q, r) {
+        var pm = m.abs();
+        if (pm.t <= 0) {
+            return;
+        }
+        var pt = this.abs();
+        if (pt.t < pm.t) {
+            if (q != null) {
+                q.fromInt(0);
+            }
+            if (r != null) {
+                this.copyTo(r);
+            }
+            return;
+        }
+        if (r == null) {
+            r = nbi();
+        }
+        var y = nbi();
+        var ts = this.s;
+        var ms = m.s;
+        var nsh = this.DB - nbits(pm[pm.t - 1]); // normalize modulus
+        if (nsh > 0) {
+            pm.lShiftTo(nsh, y);
+            pt.lShiftTo(nsh, r);
+        }
+        else {
+            pm.copyTo(y);
+            pt.copyTo(r);
+        }
+        var ys = y.t;
+        var y0 = y[ys - 1];
+        if (y0 == 0) {
+            return;
+        }
+        var yt = y0 * (1 << this.F1) + ((ys > 1) ? y[ys - 2] >> this.F2 : 0);
+        var d1 = this.FV / yt;
+        var d2 = (1 << this.F1) / yt;
+        var e = 1 << this.F2;
+        var i = r.t;
+        var j = i - ys;
+        var t = (q == null) ? nbi() : q;
+        y.dlShiftTo(j, t);
+        if (r.compareTo(t) >= 0) {
+            r[r.t++] = 1;
+            r.subTo(t, r);
+        }
+        BigInteger.ONE.dlShiftTo(ys, t);
+        t.subTo(y, y); // "negative" y so we can replace sub with am later
+        while (y.t < ys) {
+            y[y.t++] = 0;
+        }
+        while (--j >= 0) {
+            // Estimate quotient digit
+            var qd = (r[--i] == y0) ? this.DM : Math.floor(r[i] * d1 + (r[i - 1] + e) * d2);
+            if ((r[i] += y.am(0, qd, r, j, 0, ys)) < qd) { // Try it out
+                y.dlShiftTo(j, t);
+                r.subTo(t, r);
+                while (r[i] < --qd) {
+                    r.subTo(t, r);
+                }
+            }
+        }
+        if (q != null) {
+            r.drShiftTo(ys, q);
+            if (ts != ms) {
+                BigInteger.ZERO.subTo(q, q);
+            }
+        }
+        r.t = ys;
+        r.clamp();
+        if (nsh > 0) {
+            r.rShiftTo(nsh, r);
+        } // Denormalize remainder
+        if (ts < 0) {
+            BigInteger.ZERO.subTo(r, r);
+        }
+    };
+    // BigInteger.prototype.invDigit = bnpInvDigit;
+    // (protected) return "-1/this % 2^DB"; useful for Mont. reduction
+    // justification:
+    //         xy == 1 (mod m)
+    //         xy =  1+km
+    //   xy(2-xy) = (1+km)(1-km)
+    // x[y(2-xy)] = 1-k^2m^2
+    // x[y(2-xy)] == 1 (mod m^2)
+    // if y is 1/x mod m, then y(2-xy) is 1/x mod m^2
+    // should reduce x and y(2-xy) by m^2 at each step to keep size bounded.
+    // JS multiply "overflows" differently from C/C++, so care is needed here.
+    BigInteger.prototype.invDigit = function () {
+        if (this.t < 1) {
+            return 0;
+        }
+        var x = this[0];
+        if ((x & 1) == 0) {
+            return 0;
+        }
+        var y = x & 3; // y == 1/x mod 2^2
+        y = (y * (2 - (x & 0xf) * y)) & 0xf; // y == 1/x mod 2^4
+        y = (y * (2 - (x & 0xff) * y)) & 0xff; // y == 1/x mod 2^8
+        y = (y * (2 - (((x & 0xffff) * y) & 0xffff))) & 0xffff; // y == 1/x mod 2^16
+        // last step - calculate inverse mod DV directly;
+        // assumes 16 < DB <= 32 and assumes ability to handle 48-bit ints
+        y = (y * (2 - x * y % this.DV)) % this.DV; // y == 1/x mod 2^dbits
+        // we really want the negative inverse, and -DV < y < DV
+        return (y > 0) ? this.DV - y : -y;
+    };
+    // BigInteger.prototype.isEven = bnpIsEven;
+    // (protected) true iff this is even
+    BigInteger.prototype.isEven = function () {
+        return ((this.t > 0) ? (this[0] & 1) : this.s) == 0;
+    };
+    // BigInteger.prototype.exp = bnpExp;
+    // (protected) this^e, e < 2^32, doing sqr and mul with "r" (HAC 14.79)
+    BigInteger.prototype.exp = function (e, z) {
+        if (e > 0xffffffff || e < 1) {
+            return BigInteger.ONE;
+        }
+        var r = nbi();
+        var r2 = nbi();
+        var g = z.convert(this);
+        var i = nbits(e) - 1;
+        g.copyTo(r);
+        while (--i >= 0) {
+            z.sqrTo(r, r2);
+            if ((e & (1 << i)) > 0) {
+                z.mulTo(r2, g, r);
+            }
+            else {
+                var t = r;
+                r = r2;
+                r2 = t;
+            }
+        }
+        return z.revert(r);
+    };
+    // BigInteger.prototype.chunkSize = bnpChunkSize;
+    // (protected) return x s.t. r^x < DV
+    BigInteger.prototype.chunkSize = function (r) {
+        return Math.floor(Math.LN2 * this.DB / Math.log(r));
+    };
+    // BigInteger.prototype.toRadix = bnpToRadix;
+    // (protected) convert to radix string
+    BigInteger.prototype.toRadix = function (b) {
+        if (b == null) {
+            b = 10;
+        }
