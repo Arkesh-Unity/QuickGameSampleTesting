@@ -164,9 +164,9 @@ var auth_value =  localStorage.getItem("Auth Value");
 	    var concat = "&";
 			
 			var temp_value = appID+concat+merchantID+concat+merchant+concat+productNo+concat+requestID+concat+sdk+concat+urlVer;
-			var temp_sign = encryptData(temp_message);
 			
-		console.log("RSA Parmameters", temp_sign);
+			
+		console.log("RSA Parmameters", temp_value);
 	
 					
 			var params = {
