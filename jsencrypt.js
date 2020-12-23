@@ -127,3 +127,96 @@ function b64tohex(s) {
     }
     return ret;
 }
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at http://www.apache.org/licenses/LICENSE-2.0
+
+THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+MERCHANTABLITY OR NON-INFRINGEMENT.
+
+See the Apache Version 2.0 License for specific language governing permissions
+and limitations under the License.
+***************************************************************************** */
+/* global Reflect, Promise */
+
+var extendStatics = function(d, b) {
+    extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return extendStatics(d, b);
+};
+
+function __extends(d, b) {
+    extendStatics(d, b);
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+}
+
+// Hex JavaScript decoder
+// Copyright (c) 2008-2013 Lapo Luchini <lapo@lapo.it>
+// Permission to use, copy, modify, and/or distribute this software for any
+// purpose with or without fee is hereby granted, provided that the above
+// copyright notice and this permission notice appear in all copies.
+//
+// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+// WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+// ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+// WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+// ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+// OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+/*jshint browser: true, strict: true, immed: true, latedef: true, undef: true, regexdash: false */
+var decoder;
+var Hex = {
+    decode: function (a) {
+        var i;
+        if (decoder === undefined) {
+            var hex = "0123456789ABCDEF";
+            var ignore = " \f\n\r\t\u00A0\u2028\u2029";
+            decoder = {};
+            for (i = 0; i < 16; ++i) {
+                decoder[hex.charAt(i)] = i;
+            }
+            hex = hex.toLowerCase();
+            for (i = 10; i < 16; ++i) {
+                decoder[hex.charAt(i)] = i;
+            }
+            for (i = 0; i < ignore.length; ++i) {
+                decoder[ignore.charAt(i)] = -1;
+            }
+        }
+        var out = [];
+        var bits = 0;
+        var char_count = 0;
+        for (i = 0; i < a.length; ++i) {
+            var c = a.charAt(i);
+            if (c == "=") {
+                break;
+            }
+            c = decoder[c];
+            if (c == -1) {
+                continue;
+            }
+            if (c === undefined) {
+                throw new Error("Illegal character at offset " + i);
+            }
+            bits |= c;
+            if (++char_count >= 2) {
+                out[out.length] = bits;
+                bits = 0;
+                char_count = 0;
+            }
+            else {
+                bits <<= 4;
+            }
+        }
+        if (char_count) {
+            throw new Error("Hex encoding incomplete: 4 bits missing");
+        }
+        return out;
+    }
+};
