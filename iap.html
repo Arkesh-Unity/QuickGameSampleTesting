@@ -152,24 +152,7 @@ var auth_value =  localStorage.getItem("Auth Value");
 		    
 			var randomValue = Math.floor((Math.random() * 100000000000000000) + 1);
 			console.log("Random Value ="+randomValue);
-			
-			val appID = "applicationID : 103504135";
-	    val merchantID = "merchantId : 2640091000001822147";
-            val merchant = "merchantName : Ashok Kumar M R";
-            val productNo =  "productNo : Coin_250";
-            val requestID = "requestId :"+randomValue;
-            val sdk =  "sdkChannel:3";
-	    val service = "serviceCatalog : X6";
-	    val urlVer = "urlver:2";
-	    val concat = "&";
-			
-			val temp_value = appID+concat+merchantID+concat+merchant+concat+productNo+concat+requestID+concat+sdk+concat+urlVer;
-			val temp_sign = encryptData(temp_message);
-			
-			console.log("Random Value ="+randomValue);
-			
-			console.log("RSA Parmameters", temp_sign);
-			
+					
 			var params = {
 				"merchantId": "2640091000001822147",
                 "applicationID": "103504135",
