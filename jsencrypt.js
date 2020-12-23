@@ -829,3 +829,670 @@ var ASN1 = /** @class */ (function () {
         }
         return buf;
     };
+ /**
+     * Retrieve the hexadecimal value (as a string) of the current ASN.1 element
+     * @returns {string}
+     * @public
+     */
+    ASN1.prototype.getHexStringValue = function () {
+        var hexString = this.toHexString();
+        var offset = this.header * 2;
+        var length = this.length * 2;
+        return hexString.substr(offset, length);
+    };
+    ASN1.decode = function (str) {
+        var stream;
+        if (!(str instanceof Stream)) {
+            stream = new Stream(str, 0);
+        }
+        else {
+            stream = str;
+        }
+        var streamStart = new Stream(stream);
+        var tag = new ASN1Tag(stream);
+        var len = ASN1.decodeLength(stream);
+        var start = stream.pos;
+        var header = start - streamStart.pos;
+        var sub = null;
+        var getSub = function () {
+            var ret = [];
+            if (len !== null) {
+                // definite length
+                var end = start + len;
+                while (stream.pos < end) {
+                    ret[ret.length] = ASN1.decode(stream);
+                }
+                if (stream.pos != end) {
+                    throw new Error("Content size is not correct for container starting at offset " + start);
+                }
+            }
+            else {
+                // undefined length
+                try {
+                    for (;;) {
+                        var s = ASN1.decode(stream);
+                        if (s.tag.isEOC()) {
+                            break;
+                        }
+                        ret[ret.length] = s;
+                    }
+                    len = start - stream.pos; // undefined lengths are represented as negative values
+                }
+                catch (e) {
+                    throw new Error("Exception while decoding undefined length content: " + e);
+                }
+            }
+            return ret;
+        };
+        if (tag.tagConstructed) {
+            // must have valid content
+            sub = getSub();
+        }
+        else if (tag.isUniversal() && ((tag.tagNumber == 0x03) || (tag.tagNumber == 0x04))) {
+            // sometimes BitString and OctetString are used to encapsulate ASN.1
+            try {
+                if (tag.tagNumber == 0x03) {
+                    if (stream.get() != 0) {
+                        throw new Error("BIT STRINGs with unused bits cannot encapsulate.");
+                    }
+                }
+                sub = getSub();
+                for (var i = 0; i < sub.length; ++i) {
+                    if (sub[i].tag.isEOC()) {
+                        throw new Error("EOC is not supposed to be actual content.");
+                    }
+                }
+            }
+            catch (e) {
+                // but silently ignore when they don't
+                sub = null;
+            }
+        }
+        if (sub === null) {
+            if (len === null) {
+                throw new Error("We can't skip over an invalid tag with undefined length at offset " + start);
+            }
+            stream.pos = start + Math.abs(len);
+        }
+        return new ASN1(streamStart, header, len, tag, sub);
+    };
+    return ASN1;
+}());
+var ASN1Tag = /** @class */ (function () {
+    function ASN1Tag(stream) {
+        var buf = stream.get();
+        this.tagClass = buf >> 6;
+        this.tagConstructed = ((buf & 0x20) !== 0);
+        this.tagNumber = buf & 0x1F;
+        if (this.tagNumber == 0x1F) { // long tag
+            var n = new Int10();
+            do {
+                buf = stream.get();
+                n.mulAdd(128, buf & 0x7F);
+            } while (buf & 0x80);
+            this.tagNumber = n.simplify();
+        }
+    }
+    ASN1Tag.prototype.isUniversal = function () {
+        return this.tagClass === 0x00;
+    };
+    ASN1Tag.prototype.isEOC = function () {
+        return this.tagClass === 0x00 && this.tagNumber === 0x00;
+    };
+    return ASN1Tag;
+}());
+
+// Copyright (c) 2005  Tom Wu
+// Bits per digit
+var dbits;
+// JavaScript engine analysis
+var canary = 0xdeadbeefcafe;
+var j_lm = ((canary & 0xffffff) == 0xefcafe);
+//#region
+var lowprimes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311, 313, 317, 331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419, 421, 431, 433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491, 499, 503, 509, 521, 523, 541, 547, 557, 563, 569, 571, 577, 587, 593, 599, 601, 607, 613, 617, 619, 631, 641, 643, 647, 653, 659, 661, 673, 677, 683, 691, 701, 709, 719, 727, 733, 739, 743, 751, 757, 761, 769, 773, 787, 797, 809, 811, 821, 823, 827, 829, 839, 853, 857, 859, 863, 877, 881, 883, 887, 907, 911, 919, 929, 937, 941, 947, 953, 967, 971, 977, 983, 991, 997];
+var lplim = (1 << 26) / lowprimes[lowprimes.length - 1];
+//#endregion
+// (public) Constructor
+var BigInteger = /** @class */ (function () {
+    function BigInteger(a, b, c) {
+        if (a != null) {
+            if ("number" == typeof a) {
+                this.fromNumber(a, b, c);
+            }
+            else if (b == null && "string" != typeof a) {
+                this.fromString(a, 256);
+            }
+            else {
+                this.fromString(a, b);
+            }
+        }
+    }
+    //#region PUBLIC
+    // BigInteger.prototype.toString = bnToString;
+    // (public) return string representation in given radix
+    BigInteger.prototype.toString = function (b) {
+        if (this.s < 0) {
+            return "-" + this.negate().toString(b);
+        }
+        var k;
+        if (b == 16) {
+            k = 4;
+        }
+        else if (b == 8) {
+            k = 3;
+        }
+        else if (b == 2) {
+            k = 1;
+        }
+        else if (b == 32) {
+            k = 5;
+        }
+        else if (b == 4) {
+            k = 2;
+        }
+        else {
+            return this.toRadix(b);
+        }
+        var km = (1 << k) - 1;
+        var d;
+        var m = false;
+        var r = "";
+        var i = this.t;
+        var p = this.DB - (i * this.DB) % k;
+        if (i-- > 0) {
+            if (p < this.DB && (d = this[i] >> p) > 0) {
+                m = true;
+                r = int2char(d);
+            }
+            while (i >= 0) {
+                if (p < k) {
+                    d = (this[i] & ((1 << p) - 1)) << (k - p);
+                    d |= this[--i] >> (p += this.DB - k);
+                }
+                else {
+                    d = (this[i] >> (p -= k)) & km;
+                    if (p <= 0) {
+                        p += this.DB;
+                        --i;
+                    }
+                }
+                if (d > 0) {
+                    m = true;
+                }
+                if (m) {
+                    r += int2char(d);
+                }
+            }
+        }
+        return m ? r : "0";
+    };
+    // BigInteger.prototype.negate = bnNegate;
+    // (public) -this
+    BigInteger.prototype.negate = function () {
+        var r = nbi();
+        BigInteger.ZERO.subTo(this, r);
+        return r;
+    };
+    // BigInteger.prototype.abs = bnAbs;
+    // (public) |this|
+    BigInteger.prototype.abs = function () {
+        return (this.s < 0) ? this.negate() : this;
+    };
+    // BigInteger.prototype.compareTo = bnCompareTo;
+    // (public) return + if this > a, - if this < a, 0 if equal
+    BigInteger.prototype.compareTo = function (a) {
+        var r = this.s - a.s;
+        if (r != 0) {
+            return r;
+        }
+        var i = this.t;
+        r = i - a.t;
+        if (r != 0) {
+            return (this.s < 0) ? -r : r;
+        }
+        while (--i >= 0) {
+            if ((r = this[i] - a[i]) != 0) {
+                return r;
+            }
+        }
+        return 0;
+    };
+    // BigInteger.prototype.bitLength = bnBitLength;
+    // (public) return the number of bits in "this"
+    BigInteger.prototype.bitLength = function () {
+        if (this.t <= 0) {
+            return 0;
+        }
+        return this.DB * (this.t - 1) + nbits(this[this.t - 1] ^ (this.s & this.DM));
+    };
+    // BigInteger.prototype.mod = bnMod;
+    // (public) this mod a
+    BigInteger.prototype.mod = function (a) {
+        var r = nbi();
+        this.abs().divRemTo(a, null, r);
+        if (this.s < 0 && r.compareTo(BigInteger.ZERO) > 0) {
+            a.subTo(r, r);
+        }
+        return r;
+    };
+    // BigInteger.prototype.modPowInt = bnModPowInt;
+    // (public) this^e % m, 0 <= e < 2^32
+    BigInteger.prototype.modPowInt = function (e, m) {
+        var z;
+        if (e < 256 || m.isEven()) {
+            z = new Classic(m);
+        }
+        else {
+            z = new Montgomery(m);
+        }
+        return this.exp(e, z);
+    };
+    // BigInteger.prototype.clone = bnClone;
+    // (public)
+    BigInteger.prototype.clone = function () {
+        var r = nbi();
+        this.copyTo(r);
+        return r;
+    };
+    // BigInteger.prototype.intValue = bnIntValue;
+    // (public) return value as integer
+    BigInteger.prototype.intValue = function () {
+        if (this.s < 0) {
+            if (this.t == 1) {
+                return this[0] - this.DV;
+            }
+            else if (this.t == 0) {
+                return -1;
+            }
+        }
+        else if (this.t == 1) {
+            return this[0];
+        }
+        else if (this.t == 0) {
+            return 0;
+        }
+        // assumes 16 < DB < 32
+        return ((this[1] & ((1 << (32 - this.DB)) - 1)) << this.DB) | this[0];
+    };
+    // BigInteger.prototype.byteValue = bnByteValue;
+    // (public) return value as byte
+    BigInteger.prototype.byteValue = function () {
+        return (this.t == 0) ? this.s : (this[0] << 24) >> 24;
+    };
+    // BigInteger.prototype.shortValue = bnShortValue;
+    // (public) return value as short (assumes DB>=16)
+    BigInteger.prototype.shortValue = function () {
+        return (this.t == 0) ? this.s : (this[0] << 16) >> 16;
+    };
+    // BigInteger.prototype.signum = bnSigNum;
+    // (public) 0 if this == 0, 1 if this > 0
+    BigInteger.prototype.signum = function () {
+        if (this.s < 0) {
+            return -1;
+        }
+        else if (this.t <= 0 || (this.t == 1 && this[0] <= 0)) {
+            return 0;
+        }
+        else {
+            return 1;
+        }
+    };
+    // BigInteger.prototype.toByteArray = bnToByteArray;
+    // (public) convert to bigendian byte array
+    BigInteger.prototype.toByteArray = function () {
+        var i = this.t;
+        var r = [];
+        r[0] = this.s;
+        var p = this.DB - (i * this.DB) % 8;
+        var d;
+        var k = 0;
+        if (i-- > 0) {
+            if (p < this.DB && (d = this[i] >> p) != (this.s & this.DM) >> p) {
+                r[k++] = d | (this.s << (this.DB - p));
+            }
+            while (i >= 0) {
+                if (p < 8) {
+                    d = (this[i] & ((1 << p) - 1)) << (8 - p);
+                    d |= this[--i] >> (p += this.DB - 8);
+                }
+                else {
+                    d = (this[i] >> (p -= 8)) & 0xff;
+                    if (p <= 0) {
+                        p += this.DB;
+                        --i;
+                    }
+                }
+                if ((d & 0x80) != 0) {
+                    d |= -256;
+                }
+                if (k == 0 && (this.s & 0x80) != (d & 0x80)) {
+                    ++k;
+                }
+                if (k > 0 || d != this.s) {
+                    r[k++] = d;
+                }
+            }
+        }
+        return r;
+    };
+    // BigInteger.prototype.equals = bnEquals;
+    BigInteger.prototype.equals = function (a) {
+        return (this.compareTo(a) == 0);
+    };
+    // BigInteger.prototype.min = bnMin;
+    BigInteger.prototype.min = function (a) {
+        return (this.compareTo(a) < 0) ? this : a;
+    };
+    // BigInteger.prototype.max = bnMax;
+    BigInteger.prototype.max = function (a) {
+        return (this.compareTo(a) > 0) ? this : a;
+    };
+    // BigInteger.prototype.and = bnAnd;
+    BigInteger.prototype.and = function (a) {
+        var r = nbi();
+        this.bitwiseTo(a, op_and, r);
+        return r;
+    };
+    // BigInteger.prototype.or = bnOr;
+    BigInteger.prototype.or = function (a) {
+        var r = nbi();
+        this.bitwiseTo(a, op_or, r);
+        return r;
+    };
+    // BigInteger.prototype.xor = bnXor;
+    BigInteger.prototype.xor = function (a) {
+        var r = nbi();
+        this.bitwiseTo(a, op_xor, r);
+        return r;
+    };
+    // BigInteger.prototype.andNot = bnAndNot;
+    BigInteger.prototype.andNot = function (a) {
+        var r = nbi();
+        this.bitwiseTo(a, op_andnot, r);
+        return r;
+    };
+    // BigInteger.prototype.not = bnNot;
+    // (public) ~this
+    BigInteger.prototype.not = function () {
+        var r = nbi();
+        for (var i = 0; i < this.t; ++i) {
+            r[i] = this.DM & ~this[i];
+        }
+        r.t = this.t;
+        r.s = ~this.s;
+        return r;
+    };
+    // BigInteger.prototype.shiftLeft = bnShiftLeft;
+    // (public) this << n
+    BigInteger.prototype.shiftLeft = function (n) {
+        var r = nbi();
+        if (n < 0) {
+            this.rShiftTo(-n, r);
+        }
+        else {
+            this.lShiftTo(n, r);
+        }
+        return r;
+    };
+    // BigInteger.prototype.shiftRight = bnShiftRight;
+    // (public) this >> n
+    BigInteger.prototype.shiftRight = function (n) {
+        var r = nbi();
+        if (n < 0) {
+            this.lShiftTo(-n, r);
+        }
+        else {
+            this.rShiftTo(n, r);
+        }
+        return r;
+    };
+    // BigInteger.prototype.getLowestSetBit = bnGetLowestSetBit;
+    // (public) returns index of lowest 1-bit (or -1 if none)
+    BigInteger.prototype.getLowestSetBit = function () {
+        for (var i = 0; i < this.t; ++i) {
+            if (this[i] != 0) {
+                return i * this.DB + lbit(this[i]);
+            }
+        }
+        if (this.s < 0) {
+            return this.t * this.DB;
+        }
+        return -1;
+    };
+    // BigInteger.prototype.bitCount = bnBitCount;
+    // (public) return number of set bits
+    BigInteger.prototype.bitCount = function () {
+        var r = 0;
+        var x = this.s & this.DM;
+        for (var i = 0; i < this.t; ++i) {
+            r += cbit(this[i] ^ x);
+        }
+        return r;
+    };
+    // BigInteger.prototype.testBit = bnTestBit;
+    // (public) true iff nth bit is set
+    BigInteger.prototype.testBit = function (n) {
+        var j = Math.floor(n / this.DB);
+        if (j >= this.t) {
+            return (this.s != 0);
+        }
+        return ((this[j] & (1 << (n % this.DB))) != 0);
+    };
+    // BigInteger.prototype.setBit = bnSetBit;
+    // (public) this | (1<<n)
+    BigInteger.prototype.setBit = function (n) {
+        return this.changeBit(n, op_or);
+    };
+    // BigInteger.prototype.clearBit = bnClearBit;
+    // (public) this & ~(1<<n)
+    BigInteger.prototype.clearBit = function (n) {
+        return this.changeBit(n, op_andnot);
+    };
+    // BigInteger.prototype.flipBit = bnFlipBit;
+    // (public) this ^ (1<<n)
+    BigInteger.prototype.flipBit = function (n) {
+        return this.changeBit(n, op_xor);
+    };
+    // BigInteger.prototype.add = bnAdd;
+    // (public) this + a
+    BigInteger.prototype.add = function (a) {
+        var r = nbi();
+        this.addTo(a, r);
+        return r;
+    };
+    // BigInteger.prototype.subtract = bnSubtract;
+    // (public) this - a
+    BigInteger.prototype.subtract = function (a) {
+        var r = nbi();
+        this.subTo(a, r);
+        return r;
+    };
+    // BigInteger.prototype.multiply = bnMultiply;
+    // (public) this * a
+    BigInteger.prototype.multiply = function (a) {
+        var r = nbi();
+        this.multiplyTo(a, r);
+        return r;
+    };
+    // BigInteger.prototype.divide = bnDivide;
+    // (public) this / a
+    BigInteger.prototype.divide = function (a) {
+        var r = nbi();
+        this.divRemTo(a, r, null);
+        return r;
+    };
+    // BigInteger.prototype.remainder = bnRemainder;
+    // (public) this % a
+    BigInteger.prototype.remainder = function (a) {
+        var r = nbi();
+        this.divRemTo(a, null, r);
+        return r;
+    };
+    // BigInteger.prototype.divideAndRemainder = bnDivideAndRemainder;
+    // (public) [this/a,this%a]
+    BigInteger.prototype.divideAndRemainder = function (a) {
+        var q = nbi();
+        var r = nbi();
+        this.divRemTo(a, q, r);
+        return [q, r];
+    };
+    // BigInteger.prototype.modPow = bnModPow;
+    // (public) this^e % m (HAC 14.85)
+    BigInteger.prototype.modPow = function (e, m) {
+        var i = e.bitLength();
+        var k;
+        var r = nbv(1);
+        var z;
+        if (i <= 0) {
+            return r;
+        }
+        else if (i < 18) {
+            k = 1;
+        }
+        else if (i < 48) {
+            k = 3;
+        }
+        else if (i < 144) {
+            k = 4;
+        }
+        else if (i < 768) {
+            k = 5;
+        }
+        else {
+            k = 6;
+        }
+        if (i < 8) {
+            z = new Classic(m);
+        }
+        else if (m.isEven()) {
+            z = new Barrett(m);
+        }
+        else {
+            z = new Montgomery(m);
+        }
+        // precomputation
+        var g = [];
+        var n = 3;
+        var k1 = k - 1;
+        var km = (1 << k) - 1;
+        g[1] = z.convert(this);
+        if (k > 1) {
+            var g2 = nbi();
+            z.sqrTo(g[1], g2);
+            while (n <= km) {
+                g[n] = nbi();
+                z.mulTo(g2, g[n - 2], g[n]);
+                n += 2;
+            }
+        }
+        var j = e.t - 1;
+        var w;
+        var is1 = true;
+        var r2 = nbi();
+        var t;
+        i = nbits(e[j]) - 1;
+        while (j >= 0) {
+            if (i >= k1) {
+                w = (e[j] >> (i - k1)) & km;
+            }
+            else {
+                w = (e[j] & ((1 << (i + 1)) - 1)) << (k1 - i);
+                if (j > 0) {
+                    w |= e[j - 1] >> (this.DB + i - k1);
+                }
+            }
+            n = k;
+            while ((w & 1) == 0) {
+                w >>= 1;
+                --n;
+            }
+            if ((i -= n) < 0) {
+                i += this.DB;
+                --j;
+            }
+            if (is1) { // ret == 1, don't bother squaring or multiplying it
+                g[w].copyTo(r);
+                is1 = false;
+            }
+            else {
+                while (n > 1) {
+                    z.sqrTo(r, r2);
+                    z.sqrTo(r2, r);
+                    n -= 2;
+                }
+                if (n > 0) {
+                    z.sqrTo(r, r2);
+                }
+                else {
+                    t = r;
+                    r = r2;
+                    r2 = t;
+                }
+                z.mulTo(r2, g[w], r);
+            }
+            while (j >= 0 && (e[j] & (1 << i)) == 0) {
+                z.sqrTo(r, r2);
+                t = r;
+                r = r2;
+                r2 = t;
+                if (--i < 0) {
+                    i = this.DB - 1;
+                    --j;
+                }
+            }
+        }
+        return z.revert(r);
+    };
+    // BigInteger.prototype.modInverse = bnModInverse;
+    // (public) 1/this % m (HAC 14.61)
+    BigInteger.prototype.modInverse = function (m) {
+        var ac = m.isEven();
+        if ((this.isEven() && ac) || m.signum() == 0) {
+            return BigInteger.ZERO;
+        }
+        var u = m.clone();
+        var v = this.clone();
+        var a = nbv(1);
+        var b = nbv(0);
+        var c = nbv(0);
+        var d = nbv(1);
+        while (u.signum() != 0) {
+            while (u.isEven()) {
+                u.rShiftTo(1, u);
+                if (ac) {
+                    if (!a.isEven() || !b.isEven()) {
+                        a.addTo(this, a);
+                        b.subTo(m, b);
+                    }
+                    a.rShiftTo(1, a);
+                }
+                else if (!b.isEven()) {
+                    b.subTo(m, b);
+                }
+                b.rShiftTo(1, b);
+            }
+            while (v.isEven()) {
+                v.rShiftTo(1, v);
+                if (ac) {
+                    if (!c.isEven() || !d.isEven()) {
+                        c.addTo(this, c);
+                        d.subTo(m, d);
+                    }
+                    c.rShiftTo(1, c);
+                }
+                else if (!d.isEven()) {
+                    d.subTo(m, d);
+                }
+                d.rShiftTo(1, d);
+            }
+            if (u.compareTo(v) >= 0) {
+                u.subTo(v, u);
+                if (ac) {
+                    a.subTo(c, a);
+                }
+                b.subTo(d, b);
+            }
+            else {
+                v.subTo(u, v);
+                if (ac) {
+                    c.subTo(a, c);
