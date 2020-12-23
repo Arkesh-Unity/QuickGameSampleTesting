@@ -254,6 +254,34 @@ var auth_value =  localStorage.getItem("Auth Value");
 		   return encryptedMessage;
                 }
 	
+	
+        function  call_Encrypt (msg) 
+	{
+		var privateKey	= "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";
+
+                // Encrypt with the public key...
+                var encrypt = new JSEncrypt();
+                encrypt.setPublicKey();
+                var encrypted = encrypt.encrypt(msg);
+
+                // Decrypt with the private key...
+                var decrypt = new JSEncrypt();
+                decrypt.setPrivateKey($('#privkey').val());
+                var uncrypted = decrypt.decrypt(encrypted);
+
+                // Now a simple check to see if the round-trip worked.
+                if (uncrypted == encrypted) {
+			console.log("It works!!!");
+                }
+                else
+		{
+                    	console.log("Something wrong");
+                }
+            }
+     
+	
+	
+	
 </script>
 </body>
 </html>
