@@ -169,11 +169,9 @@ var auth_value =  localStorage.getItem("Auth Value");
 	    var concat = "&";
 			
 			var temp_value = appID+concat+merchantID+concat+merchant+concat+productNo+concat+requestID+concat+sdk+concat+urlVer;
-		console.log("RSA Parmameters", temp_value);
+		console.log("RSA Parmameters"+ temp_value);
 	
-			// var signKey = getSignResult(privateKey,temp_value);
-			
-			var signKey = "";					
+			var signKey = getSignResult(privateKey,temp_value);					
 			var params = {
 				"merchantId": "2640091000001822147",
                 "applicationID": "103504135",
