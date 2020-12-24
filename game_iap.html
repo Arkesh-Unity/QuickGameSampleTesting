@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrsasign/8.0.12/jsrsasign-all-min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="jsencrypt.js"></script>
+  <script type="text/javascript" src="rsa.js"></script>
+  <script type="text/javascript"></script>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-450670-2']);
+    _gaq.push(['_trackPageview']);
+    (function () {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <link href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    /* Create two equal columns that floats next to each other */
+
+    .column {
+      float: left;
+      width: 50%;
+      padding: 10px;
+      /* Should be removed. Only for demonstration */
+    }
+
+    /* Clear floats after the columns */
+
+    .row:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+
+    div.c {
+      text-align: right;
+    }
+
+    div.center {
+      text-align: center;
+    }
+
+    .column {
+      float: left;
+      width: 50%;
+      padding: 30px;
+    }
+
+    #rcorners1 {
+      border-radius: 15px;
+      background: #ffaec9;
+      padding: 20px;
+      width: 100%;
+      height: 180px;
+      text-align: center;
+      border: 1px solid white;
+    }
+
+    #rcorners2 {
+      border-radius: 25px;
+      background: #73AD21;
+      padding: 20px;
+      width: 100px;
+      height: 75px;
+    }
+
+    #inner {
+      display: block;
+    }
+
+    #buy_button {
+      background: #9e46a8;
+      width: 100px;
+      height: 40px;
+    }
+  </style>
+</head>
+
+<body style="background-color:#9e46a8;">
+  <div class="row">
+    <div class="column">
+      <div style="text-align:left;">
+        <label style="color:white;font-family:Segoe UI;">Score: </label>
+        <label style="color:white; font-family:Segoe UI;">100000</label>
+      </div>
+    </div>
+    <div class="column">
+      <div style="text-align:right;">
+        <label style="color:white;font-family:Segoe UI;">Coin: </label>
+        <label style="color:white;font-family:Segoe UI">83</label>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="row">
+      <div style="height:5px">
+      </div>
+    </div>
+
+    <div class="row">
+      <div>
+        <div style="text-align:center;">
+          <label style="color:white;font-family:Segoe UI;">Store </label>
+        </div>
+      </div>
+
+    </div>
+    <div class="row">
+      <div style="height:5px">
+      </div>
+    </div>
+    <div class="row">
+      <div class="column">
+        <div id="rcorners1">
+          <div>
+            <label style="color:#9e46a8;font-family:Segoe UI;">250 Coins</label>
+          </div>
+          <div style="height:10px"></div>
+          <div>
+            <label style="color:white;font-family:Segoe UI;">for INR 10</label>
+          </div>
+          <div style="height:10px"></div>
+          <div>
+            <input style="background: #9e46a8;width: 50%;height: 40px; border: none; outline: none" type="button" value="buy" onclick="myPay()">
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div id="rcorners1">
+          <div>
+            <label style="color:#9e46a8;font-family:Segoe UI;">500 Coins</label>
+          </div>
+          <div style="height:10px"></div>
+          <div>
+            <label style="color:white;font-family:Segoe UI;">for INR 15</label>
+          </div>
+          <div style="height:10px"></div>
+          <div>
+            <input style="background: #9e46a8;width: 50p%; height: 40px; border: none; outline: none " type="button" value="getProductDetails"
+              onclick="myPay1()">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="column">
+        <div id="rcorners1">
+          <div>
+            <label style="color:#9e46a8;font-family:Segoe UI;">750 Coins</label>
+          </div>
+          <div style="height:10px"></div>
+          <div>
+            <label style="color:white;font-family:Segoe UI;">for INR 20</label>
+          </div>
+          <div style="height:10px"></div>
+          <div>
+            <input style="background: #9e46a8;width: 50%;height: 40px; border: none; outline: none " type="button" value="productPay"
+              onclick="myPay2()">
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div id="rcorners1">
+          <div>
+            <label style="color:#9e46a8;font-family:Segoe UI;">1000 Coins</label>
+          </div>
+          <div style="height:10px"></div>
+          <div>
+            <label style="color:white;font-family:Segoe UI;">for INR 25</label>
+          </div>
+          <div style="height:10px"></div>
+          <div>
+            <input style="background: #9e46a8;width: 50%;height: 40px; border: none; outline: none" type="button" value="Buy" onclick="myPay()3">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <script>
+    function myPay() {
+      getProductDetails();
+    }
+
+    function myPay1() {
+      getProductDetails();
+    }
+
+    function myPay2() {
+      productPay();
+    }
+
+    function myPay3() {
+      productPay();
+    }
+
+    var auth_value = localStorage.getItem("Auth Value");
+
+    console.log("yuli", "productPay =" + auth_value);
+
+
+    function productPay() {
+      var randomValue = Math.floor((Math.random() * 100000000000000000) + 1);
+      console.log("productPay Random Value =" + randomValue);
+      var appID = "applicationID=103504135";
+      var merchantID = "merchantId=2640091000001822147";
+      var merchant = "merchantName=Ashok Kumar M R";
+      var productNo = "productNo=Gems_100";
+      var requestID = "requestId=" + randomValue;
+      var sdk = "sdkChannel=3";
+      var service = "serviceCatalog=X6";
+      var urlVer = "urlver=2";
+      var concat = "&";
+
+      var temp_value = appID + concat + merchantID + concat + productNo + concat + requestID + concat + sdk + concat + urlVer;
+
+
+      var rsaValue = RSA_encryption(temp_value);
+      console.log("productPay RSA rsaValue", rsaValue);
+
+
+
+      var params = {
+        "merchantId": "2640091000001822147",
+        "applicationID": "103504135",
+        "requestId": randomValue,
+        "productNo": "Gems_100",
+        "serviceCatalog": "X6",
+        "merchantName": "Ashok Kumar M R",
+        "sdkChannel": 3,
+        "urlver": "2",
+        "publicKey": "MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEA3JA2BdT7JZ8mRI5VJFObbq/YbqwjZXFP+fEh4nKVrQYgdheSb9e91pB0MNsJtMFafetEVJSCdjK+ZVPiBpeKiRYgaXEmCoNERIHGRh4PcU7IzvGOG+W8uLDCYmqzuHqUBCNFxBbe7pRjhLTv8fI1S/QvDNE6j/sKRB9YHf1C3vhsWoN2TXjaGcMnfAPl7VfmShvezmOvFMS8VMwGB45wE/xTDrshvwdwDSNxkOKLVH5Zsg+2xAVyN2TEq9MP7zzIW9ybHfM1F4APnQyszclU6sGep7M5mMTm6jXQ1Dpz1TMH+NjprS6kkRuhZSATw3cBY/0dpHI8ehKUPOkLobqsZT0Zhyu5W4tRVRh3Fzasf2xAc9YDmtmg9SsqQSjkHZWFghdBLqE5exfpJ7KYaYIkKaz/vjWTJRQo2bO3UeCOMAqaqSE2AnyhnApDqi//zBd/yvBGBAwmlbq06//deuSTX6yogL21diTUcCCi70ChqewUvllkqBbh7xJYr2Mc6cHHAgMBAAE=",
+        "sign": rsaValue,
+      }
+      HwFastappObject.productPay(JSON.stringify(params));
+    }
+
+
+    // function productPay1() {
+    //   var randomValue = Math.floor((Math.random() * 100000000000000000) + 1);
+
+    //   console.log("productPay1 Random Value =" + randomValue);
+
+    //   var params = {
+    //     "merchantId": "2640091000001822147",
+    //     "applicationID": "103504135",
+    //     "requestId": randomValue,
+    //     "productNo": "Gems_100",
+    //     "serviceCatalog": "X6",
+    //     "merchantName": "Ashok Kumar M R",
+    //     "sdkChannel": 3,
+    //     "urlver": "2",
+    //     "publicKey": "MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEA3JA2BdT7JZ8mRI5VJFObbq/YbqwjZXFP+fEh4nKVrQYgdheSb9e91pB0MNsJtMFafetEVJSCdjK+ZVPiBpeKiRYgaXEmCoNERIHGRh4PcU7IzvGOG+W8uLDCYmqzuHqUBCNFxBbe7pRjhLTv8fI1S/QvDNE6j/sKRB9YHf1C3vhsWoN2TXjaGcMnfAPl7VfmShvezmOvFMS8VMwGB45wE/xTDrshvwdwDSNxkOKLVH5Zsg+2xAVyN2TEq9MP7zzIW9ybHfM1F4APnQyszclU6sGep7M5mMTm6jXQ1Dpz1TMH+NjprS6kkRuhZSATw3cBY/0dpHI8ehKUPOkLobqsZT0Zhyu5W4tRVRh3Fzasf2xAc9YDmtmg9SsqQSjkHZWFghdBLqE5exfpJ7KYaYIkKaz/vjWTJRQo2bO3UeCOMAqaqSE2AnyhnApDqi//zBd/yvBGBAwmlbq06//deuSTX6yogL21diTUcCCi70ChqewUvllkqBbh7xJYr2Mc6cHHAgMBAAE=",
+    //     "sign": auth_value,
+    //   }
+    //   HwFastappObject.productPay(JSON.stringify(params));
+    // }
+
+    HwFastappObject.onProductPayResult = function onProductPayResult(str) {
+      alert("onProductPayResult:" + JSON.stringify(str));
+      var text = document.getElementById("text");
+      //text.innerHTML = JSON.stringify(str);
+      text.innerHTML = str;
+      system.postMessage("web call quickapp");
+      console.log("yuli", "productPay =" + JSON.stringify(str));
+
+    }
+
+    function getProductDetails() {
+
+      var randomValue = Math.floor((Math.random() * 100000000000000000) + 1);
+
+      var params = {
+        "merchantId": "2640091000001822147",
+        "applicationID": "103504135",
+        "requestId": randomValue,
+        "productNos": "Gems_100",
+      }
+      HwFastappObject.getProductDetails(JSON.stringify(params));
+    }
+    HwFastappObject.onGetProductDetailsResult = function onGetProductDetailsResult(str) {
+      alert("查询结果:sign:" + JSON.stringify(str));
+      var text = document.getElementById("text");
+      //text.innerHTML = JSON.stringify(str);
+      text.innerHTML = str;
+      system.postMessage("web call quickapp");
+      console.log("yuli", "onGetProductDetailsResult =" + JSON.stringify(str));
+
+    }
+
+
+
+
+
+    function RSA_encryption(msg) {
+      console.info("RSA_encryption msg= " + msg);
+      var plaintext = msg;
+      var privateKey = "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";
+      privateKey = `-----BEGIN PRIVATE KEY-----${privateKey}-----END PRIVATE KEY-----`
+      // Encrypt with the public key...
+      // var encrypt = new JSEncrypt();
+      // encrypt.setPrivateKey(privateKey);
+      // var encrypted = encrypt.encrypt(plaintext);
+
+      var rsaKeyObj = KEYUTIL.getKey(privateKey);
+      console.log("RSA_encryption rsaKeyObj:" + rsaKeyObj);
+      var signResult = rsaKeyObj.sign(msg, "sha256");
+      console.log("RSA_encryption signResult:" + signResult);
+      var encrypted = hex2b64(signResult);
+      console.log("RSA_encryption :" + encrypted);
+      return encrypted;
+
+      //  RSA_decryption(encrypted);
+
+    }
+
+    function RSA_decryption(msg) {
+      var encrypted = msg;
+      var privateKey = "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";
+      // Decrypt with the private key...
+      var decrypt = new JSEncrypt();
+      decrypt.setPrivateKey(privateKey);
+      var decrypted = decrypt.decrypt(encrypted);
+
+      //document.getElementById("decrypted").innerHTML = decrypted;
+      console.log("decrypted: " + decrypted);
+
+    }
+
+  </script>
+</body>
+
+</html>
