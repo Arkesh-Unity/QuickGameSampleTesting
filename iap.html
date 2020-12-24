@@ -121,7 +121,7 @@ border: 1px solid white;
          <div style="height:10px"></div>
 	<div><label  style="color:white;font-family:Segoe UI;" >for INR 25</label></div>
 	<div style="height:10px"></div>
-        <div><input  style="background: #9e46a8;width: 50%;height: 40px; border: none; outline: none" type="button" value="Buy" onclick="myPay()3" ></div>
+        <div><input  style="background: #9e46a8;width: 50%;height: 40px; border: none; outline: none" type="button" value="Buy" onclick="myPay3()" ></div>
    </div>
     </div>
    </div>
@@ -171,8 +171,9 @@ var auth_value =  localStorage.getItem("Auth Value");
 			var temp_value = appID+concat+merchantID+concat+merchant+concat+productNo+concat+requestID+concat+sdk+concat+urlVer;
 		console.log("RSA Parmameters", temp_value);
 	
-			var signKey = getSignResult(privateKey,temp_value);
-					
+			// var signKey = getSignResult(privateKey,temp_value);
+			
+			var signKey = "";					
 			var params = {
 				"merchantId": "2640091000001822147",
                 "applicationID": "103504135",
