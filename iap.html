@@ -171,7 +171,9 @@ var auth_value =  localStorage.getItem("Auth Value");
 			var temp_value = appID+concat+merchantID+concat+merchant+concat+productNo+concat+requestID+concat+sdk+concat+urlVer;
 		console.log("RSA Parmameters"+ temp_value);
 	
-			var signKey = getSignResult(privateKey,temp_value);					
+			//var signKey = getSignResult(privateKey,temp_value);
+			var signKey = sign_encrypt(privateKey,temp_value);
+			
 			var params = {
 				"merchantId": "2640091000001822147",
                 "applicationID": "103504135",
@@ -229,6 +231,30 @@ var auth_value =  localStorage.getItem("Auth Value");
             return hex2b64(signResult)
         }
      
+	function sign_encrypt(privateKey, dataToSign)
+	{
+
+		   // Encrypt with the public key...
+          var encrypt = new JSEncrypt();
+          encrypt.setPublicKey(privateKey);
+          var encrypted = encrypt.encrypt(dataToSign);
+
+          // Decrypt with the private key...
+          var decrypt = new JSEncrypt();
+          decrypt.setPrivateKey(privateKey);
+          var uncrypted = decrypt.decrypt(encrypted);
+
+          // Now a simple check to see if the round-trip worked.
+          if (uncrypted == $('#input').val())
+	  {
+            alert('It works!!!');
+		  console.log("encrypted"+encrypted);
+          }
+          else {
+            alert('Something went wrong....');
+          }
+		
+	}
 	
 	
 	
